@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="Usuarios">
+        <menu>
+            <item
+                android:id="@+id/nav_registrar_usuario"
+                android:title="Registrar Usuario" />
+            <item
+                android:id="@+id/nav_gestionar_usuario"
+                android:title="Gestionar Usuarios" />
+        </menu>
+    </item>
+
+    <item android:title="Vehículos">
+        <menu>
+            <item
+                android:id="@+id/nav_registrar_vehiculo"
+                android:title="Registrar Vehículo" />
+            <item
+                android:id="@+id/nav_gestionar_vehiculos"
+                android:title="Gestionar Vehículos" />
+        </menu>
+    </item>
+
+    <item android:title="Punto de Recoleccion">
+        <menu>
+            <item
+                android:id="@+id/nav_registrar_punto"
+                android:title="Registrar Punto de Contenedor" />
+            <item
+                android:id="@+id/nav_gestionar_puntos"
+                android:title="Gestionar Contenedores" />
+        </menu>
+    </item>
+
+    <item android:title="Rutas">
+        <menu>
+            <item
+                android:id="@+id/nav_crear_ruta"
+                android:title="Crear Ruta" />
+            <item
+                android:id="@+id/nav_asignar_ruta"
+                android:title="Asignar Ruta a Trabajadores" />
+            <item
+                android:id="@+id/nav_gestionar_rutas"
+                android:title="Gestionar Rutas" />
+            <item
+                android:id="@+id/nav_gestionar_asignaciones"
+                android:title="Gestionar Asignaciones" />
+        </menu>
+    </item>
+
+<!--    <item android:title="Reportes">-->
+<!--        <menu>-->
+<!--            <item-->
+<!--                android:id="@+id/nav_reporte_estadisticas"-->
+<!--                android:title="Estadísticas" />-->
+<!--            <item-->
+<!--                android:id="@+id/nav_reporte_incidencias"-->
+<!--                android:title="Incidencias" />-->
+<!--        </menu>-->
+<!--    </item>-->
+
+    <item android:title="Cuenta">
+        <menu>
+            <item
+                android:id="@+id/nav_perfil"
+                android:icon="@android:drawable/ic_menu_myplaces"
+                android:title="Mi Perfil" />
+            <item
+                android:id="@+id/nav_cerrar_sesion"
+                android:icon="@android:drawable/ic_lock_power_off"
+                android:title="Cerrar Sesión"
+                android:iconTint="#F44336" />
+        </menu>
+    </item>
+</menu>

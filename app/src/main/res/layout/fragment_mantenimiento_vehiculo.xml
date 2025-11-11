@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MantenimientoVehiculo">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:background="@android:color/white">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="40dp"
+            android:paddingTop="32dp"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp">
+
+            <!-- Título -->
+            <TextView
+                android:id="@+id/txtTitulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Registrar Mantenimiento"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:textSize="22sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- Información del Vehículo -->
+            <TextView
+                android:id="@+id/lblInfoVehiculo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vehículo"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@id/txtTitulo"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="32dp" />
+
+            <!-- Placa -->
+            <TextView
+                android:id="@+id/lblPlaca"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Placa"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@id/lblInfoVehiculo"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/txtPlaca"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="ABC-123"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:padding="12dp"
+                android:background="#F5F5F5"
+                app:layout_constraintTop_toBottomOf="@id/lblPlaca"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="4dp" />
+
+            <!-- Tipo de Vehículo -->
+            <TextView
+                android:id="@+id/lblTipoVehiculo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tipo de Vehículo"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@id/txtPlaca"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/txtTipoVehiculo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Camión Pequeño"
+                android:textSize="16sp"
+                android:textColor="@android:color/darker_gray"
+                android:padding="12dp"
+                android:background="#F5F5F5"
+                app:layout_constraintTop_toBottomOf="@id/lblTipoVehiculo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="4dp" />
+
+            <!-- Sección: Datos del Mantenimiento -->
+            <TextView
+                android:id="@+id/lblSeccionMantenimiento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Datos del Mantenimiento"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@id/txtTipoVehiculo"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="32dp" />
+
+            <!-- Fecha de Mantenimiento -->
+            <TextView
+                android:id="@+id/lblFechaMantenimiento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fecha de Mantenimiento *"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@id/lblSeccionMantenimiento"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="16dp" />
+
+            <EditText
+                android:id="@+id/etFechaMantenimiento"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="DD/MM/YYYY"
+                android:focusable="false"
+                android:clickable="true"
+                android:padding="12dp"
+                android:drawableEnd="@android:drawable/ic_menu_my_calendar"
+                android:background="@android:drawable/edit_text"
+                app:layout_constraintTop_toBottomOf="@id/lblFechaMantenimiento"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="4dp" />
+
+            <!-- Descripción -->
+            <TextView
+                android:id="@+id/lblDescripcion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Descripción *"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@id/etFechaMantenimiento"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="16dp" />
+
+            <EditText
+                android:id="@+id/etDescripcion"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:hint="Describa el mantenimiento realizado..."
+                android:inputType="textMultiLine"
+                android:gravity="top|start"
+                android:padding="12dp"
+                android:background="@android:drawable/edit_text"
+                app:layout_constraintTop_toBottomOf="@id/lblDescripcion"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="4dp" />
+
+            <!-- Costo -->
+            <TextView
+                android:id="@+id/lblCosto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Costo (S/) *"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@id/etDescripcion"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="16dp" />
+
+            <EditText
+                android:id="@+id/etCosto"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="0.00"
+                android:inputType="numberDecimal"
+                android:padding="12dp"
+                android:background="@android:drawable/edit_text"
+                app:layout_constraintTop_toBottomOf="@id/lblCosto"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="4dp" />
+
+            <!-- Próximo Mantenimiento -->
+            <TextView
+                android:id="@+id/lblProximoMantenimiento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Próximo Mantenimiento"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@id/etCosto"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="16dp" />
+
+            <EditText
+                android:id="@+id/etProximoMantenimiento"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="DD/MM/YYYY (Opcional)"
+                android:focusable="false"
+                android:clickable="true"
+                android:padding="12dp"
+                android:drawableEnd="@android:drawable/ic_menu_my_calendar"
+                android:background="@android:drawable/edit_text"
+                app:layout_constraintTop_toBottomOf="@id/lblProximoMantenimiento"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="4dp" />
+
+            <!-- Botones -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRegistrarMantenimiento"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:text="Registrar Mantenimiento"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                android:textColor="@android:color/white"
+                android:backgroundTint="@android:color/holo_green_dark"
+                app:cornerRadius="12dp"
+                app:iconGravity="textStart"
+                app:rippleColor="@android:color/darker_gray"
+                app:layout_constraintTop_toBottomOf="@id/etProximoMantenimiento"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="32dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCancelar"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:text="Cancelar"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:backgroundTint="@android:color/white"
+                app:strokeColor="@android:color/black"
+                app:strokeWidth="2dp"
+                app:cornerRadius="12dp"
+                app:rippleColor="@android:color/darker_gray"
+                app:layout_constraintTop_toBottomOf="@id/btnRegistrarMantenimiento"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="16dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</FrameLayout>

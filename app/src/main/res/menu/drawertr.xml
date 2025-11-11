@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_perfil"
+        android:title="Perfil"/>
+
+    <item
+        android:id="@+id/nav_historial_rutas"
+        android:title="Historial Rutas"/>
+
+    <item
+        android:id="@+id/nav_estadisticas"
+        android:title="Perfil"/>
+
+    <item
+        android:id="@+id/nav_configuracion"
+        android:title="Configuracion"/>
+
+    <item
+        android:id="@+id/nav_cerrar_sesion"
+        android:icon="@android:drawable/ic_lock_power_off"
+        android:title="Cerrar Sesión"
+        android:iconTint="#F44336" />
+
+</menu>

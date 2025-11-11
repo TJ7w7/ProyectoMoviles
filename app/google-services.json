@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "716845469243",
+    "project_id": "proyecto-ecomanager",
+    "storage_bucket": "proyecto-ecomanager.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:716845469243:android:c3ce5634919bce8300961e",
+        "android_client_info": {
+          "package_name": "com.example.proyecto"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4pLMd_zDzrs3ierc6C9fkb5QkpFH4VJo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
