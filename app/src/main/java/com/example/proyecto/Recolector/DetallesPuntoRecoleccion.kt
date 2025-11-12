@@ -283,7 +283,8 @@ class DetallesPuntoRecoleccion : Fragment() {
             return
         }
 
-        // Guardar evidencias en Firestore
+        Log.d(TAG, "Guardando evidencias para punto: $puntoId")
+
         val evidenciaData = hashMapOf(
             "asignacionId" to asignacionId,
             "puntoId" to puntoId,
@@ -296,33 +297,61 @@ class DetallesPuntoRecoleccion : Fragment() {
         db.collection("evidencias_recoleccion")
             .add(evidenciaData)
             .addOnSuccessListener {
-                Toast.makeText(requireContext(), "✓ Punto completado con evidencias guardadas", Toast.LENGTH_SHORT).show()
+                Log.d(TAG, "✓ Evidencias guardadas en BD")
 
-                // Volver al fragment de ruta
-                requireActivity().supportFragmentManager.popBackStack()
-                requireActivity().supportFragmentManager.popBackStack()
+                Toast.makeText(requireContext(), "✓ Punto completado", Toast.LENGTH_SHORT).show()
 
-                // Notificar al fragment padre que el punto fue completado
-                notificarPuntoCompletado()
+                // Simplemente volver atrás
+                // RecolectorRuta recargará los estados desde la BD automáticamente en onResume
+                requireActivity().supportFragmentManager.popBackStack()
             }
             .addOnFailureListener { e ->
-                Log.e(TAG, "Error al guardar evidencias", e)
+                Log.e(TAG, "Error al guardar evidencias: ${e.message}", e)
                 Toast.makeText(requireContext(), "Error al finalizar punto", Toast.LENGTH_SHORT).show()
             }
     }
 
-    private fun notificarPuntoCompletado() {
-        // Buscar el fragment de RecolectorRuta en el backstack
-        val fragmentManager = requireActivity().supportFragmentManager
-        val fragments = fragmentManager.fragments
-
-        for (fragment in fragments) {
-            if (fragment is RecolectorRuta && fragment.isVisible) {
-                fragment.marcarPuntoCompletadoExterno(puntoId)
-                break
-            }
-        }
-    }
+//    private fun finalizarPunto() {
+//        if (fotosEvidencia.isEmpty()) {
+//            Toast.makeText(
+//                requireContext(),
+//                "Debes tomar al menos una foto de evidencia",
+//                Toast.LENGTH_LONG
+//            ).show()
+//            return
+//        }
+//
+//        // Guardar evidencias en Firestore
+//        val evidenciaData = hashMapOf(
+//            "asignacionId" to asignacionId,
+//            "puntoId" to puntoId,
+//            "orden" to puntoOrden,
+//            "fotos" to fotosEvidencia,
+//            "fechaRecoleccion" to System.currentTimeMillis(),
+//            "recolectorId" to com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.uid
+//        )
+//
+//        db.collection("evidencias_recoleccion")
+//            .add(evidenciaData)
+//            .addOnSuccessListener {
+//                // PRIMERO: Enviar resultado al fragment padre
+//                val result = Bundle().apply {
+//                    putString("puntoId", puntoId)
+//                }
+//                parentFragmentManager.setFragmentResult("puntoCompletado", result)
+//
+//                // SEGUNDO: Mostrar mensaje
+//                Toast.makeText(requireContext(), "✓ Punto completado", Toast.LENGTH_SHORT).show()
+//
+//                // TERCERO: Cerrar fragments (este y el escáner si existe)
+//                parentFragmentManager.popBackStack()
+//                parentFragmentManager.popBackStack()
+//            }
+//            .addOnFailureListener { e ->
+//                Log.e(TAG, "Error al guardar evidencias", e)
+//                Toast.makeText(requireContext(), "Error al finalizar punto", Toast.LENGTH_SHORT).show()
+//            }
+//    }
 
     private fun getOutputDirectory(): File {
         val mediaDir = requireContext().externalMediaDirs.firstOrNull()?.let {

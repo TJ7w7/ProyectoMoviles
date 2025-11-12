@@ -32,9 +32,6 @@ object QRCodeHelper {
         }
     }
 
-    /**
-     * Convierte un Bitmap a ByteArray para subirlo a Firebase Storage
-     */
     fun bitmapToByteArray(bitmap: Bitmap): ByteArray {
         val stream = java.io.ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
