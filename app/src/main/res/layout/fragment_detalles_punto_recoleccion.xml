@@ -140,7 +140,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="📸 Captura evidencias fotográficas"
+                    android:text="Captura evidencias fotográficas"
                     android:textColor="@android:color/white"
                     android:textSize="14sp"
                     android:textStyle="bold"
@@ -156,7 +156,7 @@
             android:id="@+id/btnTomarFoto"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:text="📷 Tomar Foto"
+            android:text="Tomar Foto"
             android:textSize="16sp"
             android:textAllCaps="false"
             android:backgroundTint="#2196F3"
@@ -209,5 +209,4 @@
             app:icon="@android:drawable/checkbox_on_background"
             app:iconGravity="start" />
     </LinearLayout>
-
 </ScrollView>

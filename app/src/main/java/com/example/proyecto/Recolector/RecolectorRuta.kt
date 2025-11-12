@@ -104,54 +104,12 @@ class RecolectorRuta : Fragment(), OnMapReadyCallback {
         }
     }
 
-//    private val qrScannerLauncher = registerForActivityResult(
-//        ActivityResultContracts.StartActivityForResult()
-//    ) { result ->
-//        if (result.resultCode == QrScanner.RESULT_QR_VALIDO) {
-//            val puntoId = result.data?.getStringExtra(QrScanner.EXTRA_PUNTO_ID) ?: ""
-//            val asignacionIdResult = result.data?.getStringExtra(QrScanner.EXTRA_ASIGNACION_ID) ?: ""
-//            val orden = result.data?.getIntExtra(QrScanner.EXTRA_ORDEN, 0) ?: 0
-//
-//            // Abrir detalles del punto
-//            val fragment = DetallesPuntoRecoleccion.newInstance(puntoId, asignacionIdResult, orden)
-//            childFragmentManager.beginTransaction()  // CAMBIAR a childFragmentManager
-//                .replace(R.id.fragment_container, fragment)
-//                .addToBackStack(null)
-//                .commit()
-//        }
-//    }
-
-    // Launcher para el escáner QR (Activity)
-//    private val qrScannerLauncher = registerForActivityResult(
-//        ActivityResultContracts.StartActivityForResult()
-//    ) { result ->
-//        if (result.resultCode == QrScanner.RESULT_QR_VALIDO) {
-//            val puntoId = result.data?.getStringExtra(QrScanner.EXTRA_PUNTO_ID) ?: ""
-//            val asignacionId = result.data?.getStringExtra(QrScanner.EXTRA_ASIGNACION_ID) ?: ""
-//            val orden = result.data?.getIntExtra(QrScanner.EXTRA_ORDEN, 0) ?: 0
-//
-//            // Abrir detalles del punto
-//            val fragment = DetallesPuntoRecoleccion.newInstance(puntoId, asignacionId, orden)
-//            requireActivity().supportFragmentManager.beginTransaction()
-//                .replace(R.id.fragment_container, fragment)
-//                .addToBackStack(null)
-//                .commit()
-//        }
-//    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         asignacionId = arguments?.getString("asignacionId") ?: ""
         db = FirebaseFirestore.getInstance()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
     }
-
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        asignacionId = arguments?.getString("asignacionId") ?: ""
-//        db = FirebaseFirestore.getInstance()
-//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -165,8 +123,6 @@ class RecolectorRuta : Fragment(), OnMapReadyCallback {
         cargarDatosRuta()
         cargarEstadoRuta()
 
-//        setupFragmentResultListener()
-
         btnExpandirMapa.setOnClickListener {
             toggleMapaExpandido()
         }
@@ -176,19 +132,6 @@ class RecolectorRuta : Fragment(), OnMapReadyCallback {
         }
         return view
     }
-
-    // AGREGAR esta nueva función:
-//    private fun setupFragmentResultListener() {
-//        childFragmentManager.setFragmentResultListener(
-//            "puntoCompletado",
-//            viewLifecycleOwner
-//        ) { _, bundle ->
-//            val puntoId = bundle.getString("puntoId")
-//            if (puntoId != null) {
-//                marcarPuntoCompletadoExterno(puntoId)
-//            }
-//        }
-//    }
 
     private fun initViews(view: View) {
         cardMapa = view.findViewById(R.id.cardMapa)
@@ -263,19 +206,6 @@ class RecolectorRuta : Fragment(), OnMapReadyCallback {
             }
     }
 
-    // Función pública para marcar completado desde DetallesPuntoRecoleccion
-//    fun marcarPuntoCompletadoExterno(puntoId: String) {
-//        val punto = puntosRecoleccion.find { it.punto.id == puntoId }
-//        punto?.let {
-//            marcarPuntoCompletado(it)
-//        }
-//    }
-
-//    fun marcarPuntoCompletadoExterno(puntoId: String) {
-//        Log.d("RecolectorRuta", "Recargando estados desde BD...")
-//        cargarEstadosPuntosDesdeDB()
-//    }
-
     override fun onResume() {
         super.onResume()
 
@@ -346,7 +276,6 @@ class RecolectorRuta : Fragment(), OnMapReadyCallback {
             }
     }
 
-    // MODIFICAR cargarDetallesPuntos:
     private fun cargarDetallesPuntos(puntosOrdenados: List<Pair<Int, String>>) {
         var puntosRestantes = puntosOrdenados.size
 
@@ -373,7 +302,6 @@ class RecolectorRuta : Fragment(), OnMapReadyCallback {
         }
     }
 
-    // AGREGAR esta nueva función:
     private fun cargarEstadosPuntosDesdeDB() {
         db.collection("evidencias_recoleccion")
             .whereEqualTo("asignacionId", asignacionId)
@@ -422,36 +350,6 @@ class RecolectorRuta : Fragment(), OnMapReadyCallback {
             }
     }
 
-//    private fun cargarDetallesPuntos(puntosOrdenados: List<Pair<Int, String>>) {
-//        var puntosRestantes = puntosOrdenados.size
-//
-//        for ((orden, puntoId) in puntosOrdenados) {
-//            db.collection("puntos_recoleccion")
-//                .document(puntoId)
-//                .get()
-//                .addOnSuccessListener { puntoDoc ->
-//                    if (puntoDoc.exists()) {
-//                        val punto = puntoDoc.toObject(entPuntoRecoleccion::class.java)
-//                        if (punto != null) {
-//                            puntosRecoleccion.add(PuntoConEstado(punto, orden))
-//                        }
-//                    }
-//
-//                    puntosRestantes--
-//                    if (puntosRestantes == 0) {
-//                        puntosRecoleccion.sortBy { it.orden }
-//                        mostrarPuntosEnMapa()
-//                        adapter.notifyDataSetChanged()
-//                        actualizarProgreso()
-//
-//                        if (puntosRecoleccion.isNotEmpty()) {
-//                            puntosRecoleccion[0].estado = EstadoRecoleccion.EN_CURSO
-//                        }
-//                    }
-//                }
-//        }
-//    }
-
     private fun mostrarPuntosEnMapa() {
         if (!::googleMap.isInitialized || puntosRecoleccion.isEmpty()) return
 
@@ -469,6 +367,8 @@ class RecolectorRuta : Fragment(), OnMapReadyCallback {
                 EstadoRecoleccion.EN_CURSO -> Color.rgb(255, 165, 0)
                 EstadoRecoleccion.PENDIENTE -> Color.RED
             }
+
+            val puntoId = puntoEstado.punto.id ?: ""
 
             val marker = googleMap.addMarker(
                 MarkerOptions()
@@ -540,10 +440,6 @@ class RecolectorRuta : Fragment(), OnMapReadyCallback {
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17f))
     }
 
-    private fun findMarkerForPunto(punto: PuntoConEstado): Marker? {
-        return null
-    }
-
     private fun marcarPuntoCompletado(punto: PuntoConEstado) {
         punto.estado = EstadoRecoleccion.COMPLETADO
         punto.horaRecoleccion = System.currentTimeMillis()
@@ -556,7 +452,7 @@ class RecolectorRuta : Fragment(), OnMapReadyCallback {
         adapter.notifyDataSetChanged()
         actualizarProgreso()
 
-        googleMap.clear()
+//        googleMap.clear()
         mostrarPuntosEnMapa()
 
         Toast.makeText(requireContext(), "✓ Punto completado", Toast.LENGTH_SHORT).show()
@@ -603,24 +499,6 @@ class RecolectorRuta : Fragment(), OnMapReadyCallback {
         }
     }
 
-//    private fun iniciarRuta() {
-//        if (!rutaIniciada) {
-//            rutaIniciada = true
-//            btnIniciarRuta.text = "Finalizar Ruta"
-//            txtEstadoRuta.text = "Estado: En Progreso"
-//            txtEstadoRuta.setTextColor(ContextCompat.getColor(requireContext(), android.R.color.holo_orange_dark))
-//
-//            db.collection("asignaciones_rutas")
-//                .document(asignacionId)
-//                .update(
-//                    "estado", "En Progreso",
-//                    "fechaEjecucion", System.currentTimeMillis()
-//                )
-//        } else {
-//            finalizarRuta()
-//        }
-//    }
-
     private fun finalizarRuta() {
         val completados = puntosRecoleccion.count { it.estado == EstadoRecoleccion.COMPLETADO }
         val total = puntosRecoleccion.size
@@ -634,17 +512,23 @@ class RecolectorRuta : Fragment(), OnMapReadyCallback {
             return
         }
 
+        // Obtener rutaId desde la asignación
         db.collection("asignaciones_rutas")
             .document(asignacionId)
-            .update("estado", "Completada")
-            .addOnSuccessListener {
-                Toast.makeText(requireContext(), "✓ Ruta completada", Toast.LENGTH_SHORT).show()
-                requireActivity().supportFragmentManager.popBackStack()
-                cargarEstadoRuta()
+            .get()
+            .addOnSuccessListener { document ->
+                val rutaId = document.getString("rutaId") ?: ""
+
+                // Abrir fragment de registro de peso
+                val fragment = RegistroPesoMaterial.newInstance(asignacionId, rutaId)
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit()
             }
             .addOnFailureListener { e ->
-                Log.e("RecolectorRuta", "Error al completar ruta: ${e.message}")
-                Toast.makeText(requireContext(), "Error al completar ruta", Toast.LENGTH_SHORT).show()
+                Log.e("RecolectorRuta", "Error al obtener rutaId: ${e.message}")
+                Toast.makeText(requireContext(), "Error al procesar ruta", Toast.LENGTH_SHORT).show()
             }
     }
 

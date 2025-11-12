@@ -2,7 +2,6 @@ package com.example.proyecto.Recolector
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.graphics.Camera
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -33,7 +32,6 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-//import java.util.jar.Manifest
 
 class DetallesPuntoRecoleccion : Fragment() {
 
@@ -310,48 +308,6 @@ class DetallesPuntoRecoleccion : Fragment() {
                 Toast.makeText(requireContext(), "Error al finalizar punto", Toast.LENGTH_SHORT).show()
             }
     }
-
-//    private fun finalizarPunto() {
-//        if (fotosEvidencia.isEmpty()) {
-//            Toast.makeText(
-//                requireContext(),
-//                "Debes tomar al menos una foto de evidencia",
-//                Toast.LENGTH_LONG
-//            ).show()
-//            return
-//        }
-//
-//        // Guardar evidencias en Firestore
-//        val evidenciaData = hashMapOf(
-//            "asignacionId" to asignacionId,
-//            "puntoId" to puntoId,
-//            "orden" to puntoOrden,
-//            "fotos" to fotosEvidencia,
-//            "fechaRecoleccion" to System.currentTimeMillis(),
-//            "recolectorId" to com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.uid
-//        )
-//
-//        db.collection("evidencias_recoleccion")
-//            .add(evidenciaData)
-//            .addOnSuccessListener {
-//                // PRIMERO: Enviar resultado al fragment padre
-//                val result = Bundle().apply {
-//                    putString("puntoId", puntoId)
-//                }
-//                parentFragmentManager.setFragmentResult("puntoCompletado", result)
-//
-//                // SEGUNDO: Mostrar mensaje
-//                Toast.makeText(requireContext(), "✓ Punto completado", Toast.LENGTH_SHORT).show()
-//
-//                // TERCERO: Cerrar fragments (este y el escáner si existe)
-//                parentFragmentManager.popBackStack()
-//                parentFragmentManager.popBackStack()
-//            }
-//            .addOnFailureListener { e ->
-//                Log.e(TAG, "Error al guardar evidencias", e)
-//                Toast.makeText(requireContext(), "Error al finalizar punto", Toast.LENGTH_SHORT).show()
-//            }
-//    }
 
     private fun getOutputDirectory(): File {
         val mediaDir = requireContext().externalMediaDirs.firstOrNull()?.let {

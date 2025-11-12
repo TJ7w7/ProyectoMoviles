@@ -9,10 +9,6 @@
         android:title="Historial Rutas"/>
 
     <item
-        android:id="@+id/nav_estadisticas"
-        android:title="Perfil"/>
-
-    <item
         android:id="@+id/nav_configuracion"
         android:title="Configuracion"/>
 
