@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.proyecto"
+    namespace = "com.tj.proyecto"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.proyecto"
+        applicationId = "com.tj.proyecto"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
