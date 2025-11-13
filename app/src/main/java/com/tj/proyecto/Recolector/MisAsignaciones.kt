@@ -1,6 +1,7 @@
 package com.tj.proyecto.Recolector
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -26,7 +27,6 @@ class MisAsignaciones : Fragment() {
 
     private val asignacionesList = mutableListOf<entAsignacionRuta>()
     private lateinit var adapter: MisAsignacionesAdapter
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
