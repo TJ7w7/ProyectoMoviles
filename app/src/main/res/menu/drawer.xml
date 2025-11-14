@@ -50,23 +50,8 @@
         </menu>
     </item>
 
-<!--    <item android:title="Reportes">-->
-<!--        <menu>-->
-<!--            <item-->
-<!--                android:id="@+id/nav_reporte_estadisticas"-->
-<!--                android:title="Estadísticas" />-->
-<!--            <item-->
-<!--                android:id="@+id/nav_reporte_incidencias"-->
-<!--                android:title="Incidencias" />-->
-<!--        </menu>-->
-<!--    </item>-->
-
     <item android:title="Cuenta">
         <menu>
-            <item
-                android:id="@+id/nav_perfil"
-                android:icon="@android:drawable/ic_menu_myplaces"
-                android:title="Mi Perfil" />
             <item
                 android:id="@+id/nav_cerrar_sesion"
                 android:icon="@android:drawable/ic_lock_power_off"

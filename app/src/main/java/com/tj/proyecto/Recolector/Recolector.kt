@@ -31,9 +31,6 @@ class Recolector : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-
-//        enableEdgeToEdge()
         setContentView(R.layout.activity_recolector)
 
         val btnNavView = findViewById<BottomNavigationView>(R.id.menuNavigationView)
@@ -66,7 +63,7 @@ class Recolector : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
         btnNavView.setOnItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.home -> {
-                    loadFragment(HomeDashboard())
+                    loadFragment(HomeRecolector())
                     true
                 }
                 R.id.asignaciones -> {
@@ -78,7 +75,7 @@ class Recolector : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
         }
 
         if (savedInstanceState == null) {
-//            loadFragment(HomeDashboard())
+
             verificarYAbrirRutaActual()
         }
     }

@@ -299,6 +299,71 @@
             android:layout_marginTop="8dp"
             android:nestedScrollingEnabled="false" />
 
+        <!-- NUEVO: Card de Evidencias Fotográficas -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardEvidencias"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:cardElevation="3dp"
+            app:cardCornerRadius="12dp"
+            app:strokeColor="@android:color/darker_gray"
+            app:strokeWidth="2dp"
+            app:layout_constraintTop_toBottomOf="@id/rvPuntosRuta"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Evidencias"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:drawableStart="@android:drawable/ic_menu_gallery"
+                    android:drawablePadding="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fotos tomadas durante la recolección"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/darker_gray"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="16dp" />
+
+                <!-- Mensaje cuando no hay evidencias -->
+                <TextView
+                    android:id="@+id/txtSinEvidencias"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Aún no se han tomado fotos de evidencia para esta asignación"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/darker_gray"
+                    android:textStyle="italic"
+                    android:gravity="center"
+                    android:padding="20dp"
+                    android:background="@android:color/holo_orange_light"
+                    android:visibility="gone" />
+
+                <!-- RecyclerView de evidencias por punto -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvEvidenciasPuntos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
         <!-- Botón Volver -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnVolver"
@@ -313,7 +378,7 @@
             app:strokeWidth="2dp"
             app:cornerRadius="12dp"
             app:rippleColor="@android:color/darker_gray"
-            app:layout_constraintTop_toBottomOf="@id/rvPuntosRuta"
+            app:layout_constraintTop_toBottomOf="@id/cardEvidencias"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="24dp"
@@ -321,286 +386,3 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
-
-<!--<?xml version="1.0" encoding="utf-8"?>-->
-<!--<ScrollView-->
-<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--    tools:context=".DetalleAsignacion">-->
-
-<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:padding="16dp">-->
-
-<!--    &lt;!&ndash; Título &ndash;&gt;-->
-<!--    <TextView-->
-<!--        android:id="@+id/txtTitulo"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Detalle de Asignación"-->
-<!--        android:textStyle="bold"-->
-<!--        android:textColor="@android:color/black"-->
-<!--        android:textSize="22sp"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent" />-->
-
-<!--    &lt;!&ndash; Card Información de Ruta &ndash;&gt;-->
-<!--    <com.google.android.material.card.MaterialCardView-->
-<!--        android:id="@+id/cardRuta"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="16dp"-->
-<!--        app:cardElevation="4dp"-->
-<!--        app:cardCornerRadius="12dp"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/txtTitulo"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent">-->
-
-<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:padding="16dp">-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/lblRuta"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Ruta"-->
-<!--                android:textSize="12sp"-->
-<!--                android:textColor="@android:color/darker_gray"-->
-<!--                app:layout_constraintTop_toTopOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/txtRutaNombre"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Ruta Centro - Mañana"-->
-<!--                android:textStyle="bold"-->
-<!--                android:textSize="18sp"-->
-<!--                android:textColor="@android:color/black"-->
-<!--                app:layout_constraintTop_toBottomOf="@id/lblRuta"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintEnd_toStartOf="@id/txtEstado"-->
-<!--                android:layout_marginTop="4dp"-->
-<!--                android:layout_marginEnd="8dp" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/txtRutaCodigo"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="RUTA001"-->
-<!--                android:textSize="12sp"-->
-<!--                android:textColor="@android:color/white"-->
-<!--                android:background="@android:color/holo_blue_dark"-->
-<!--                android:paddingStart="8dp"-->
-<!--                android:paddingEnd="8dp"-->
-<!--                android:paddingTop="4dp"-->
-<!--                android:paddingBottom="4dp"-->
-<!--                app:layout_constraintTop_toBottomOf="@id/txtRutaNombre"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                android:layout_marginTop="8dp" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/txtEstado"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Programada"-->
-<!--                android:textSize="14sp"-->
-<!--                android:textStyle="bold"-->
-<!--                android:textColor="@android:color/white"-->
-<!--                android:background="@android:color/holo_blue_dark"-->
-<!--                android:paddingStart="12dp"-->
-<!--                android:paddingEnd="12dp"-->
-<!--                android:paddingTop="6dp"-->
-<!--                android:paddingBottom="6dp"-->
-<!--                app:layout_constraintTop_toTopOf="parent"-->
-<!--                app:layout_constraintEnd_toEndOf="parent" />-->
-
-<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
-
-<!--    </com.google.android.material.card.MaterialCardView>-->
-
-<!--    &lt;!&ndash; Fechas &ndash;&gt;-->
-<!--    <TextView-->
-<!--        android:id="@+id/lblFechaAsignacion"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Fecha de Asignación"-->
-<!--        android:textSize="12sp"-->
-<!--        android:textColor="@android:color/darker_gray"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/cardRuta"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        android:layout_marginTop="16dp" />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/txtFechaAsignacion"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="24/10/2025 14:30"-->
-<!--        android:textSize="16sp"-->
-<!--        android:textColor="@android:color/black"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/lblFechaAsignacion"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        android:layout_marginTop="4dp" />-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/lblFechaEjecucion"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Fecha de Ejecución"-->
-<!--            android:textSize="12sp"-->
-<!--            android:textColor="@android:color/darker_gray"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/txtFechaAsignacion"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            android:layout_marginTop="12dp" />-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/txtFechaEjecucion"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="25/10/2025 08:00"-->
-<!--            android:textSize="16sp"-->
-<!--            android:textColor="@android:color/holo_green_dark"-->
-<!--            android:textStyle="bold"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/lblFechaEjecucion"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            android:layout_marginTop="4dp" />-->
-
-<!--        &lt;!&ndash; Vehículo &ndash;&gt;-->
-<!--        <TextView-->
-<!--            android:id="@+id/lblVehiculo"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Vehículo"-->
-<!--            android:textSize="12sp"-->
-<!--            android:textColor="@android:color/darker_gray"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/txtFechaEjecucion"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            android:layout_marginTop="16dp" />-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/txtVehiculo"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="ABC-123 - Camión Grande"-->
-<!--            android:textSize="16sp"-->
-<!--            android:textColor="@android:color/black"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/lblVehiculo"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            android:layout_marginTop="4dp" />-->
-
-<!--        &lt;!&ndash; Conductor &ndash;&gt;-->
-<!--        <TextView-->
-<!--            android:id="@+id/lblConductor"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Conductor"-->
-<!--            android:textSize="12sp"-->
-<!--            android:textColor="@android:color/darker_gray"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/txtVehiculo"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            android:layout_marginTop="12dp" />-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/txtConductor"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Juan Pérez García"-->
-<!--            android:textSize="16sp"-->
-<!--            android:textColor="@android:color/black"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/lblConductor"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            android:layout_marginTop="4dp" />-->
-
-<!--        &lt;!&ndash; Ayudantes &ndash;&gt;-->
-<!--        <TextView-->
-<!--            android:id="@+id/lblAyudantes"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Ayudantes"-->
-<!--            android:textSize="12sp"-->
-<!--            android:textColor="@android:color/darker_gray"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/txtConductor"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            android:layout_marginTop="12dp" />-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/txtAyudantes"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="• Pedro López\n• María González"-->
-<!--            android:textSize="16sp"-->
-<!--            android:textColor="@android:color/black"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/lblAyudantes"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            android:layout_marginTop="4dp" />-->
-
-<!--        &lt;!&ndash; Observaciones &ndash;&gt;-->
-<!--        <TextView-->
-<!--            android:id="@+id/lblObservaciones"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Observaciones"-->
-<!--            android:textSize="12sp"-->
-<!--            android:textColor="@android:color/darker_gray"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/txtAyudantes"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            android:layout_marginTop="12dp" />-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/txtObservaciones"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Alguna observación especial"-->
-<!--            android:textSize="14sp"-->
-<!--            android:textColor="@android:color/darker_gray"-->
-<!--            android:textStyle="italic"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/lblObservaciones"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            android:layout_marginTop="4dp" />-->
-
-<!--        &lt;!&ndash; Puntos de la Ruta &ndash;&gt;-->
-<!--        <TextView-->
-<!--            android:id="@+id/lblPuntosRuta"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Puntos de Recolección"-->
-<!--            android:textSize="16sp"-->
-<!--            android:textStyle="bold"-->
-<!--            android:textColor="@android:color/black"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/txtObservaciones"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            android:layout_marginTop="24dp" />-->
-
-<!--        <androidx.recyclerview.widget.RecyclerView-->
-<!--            android:id="@+id/rvPuntosRuta"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/lblPuntosRuta"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            android:layout_marginTop="8dp"-->
-<!--            android:nestedScrollingEnabled="false" />-->
-
-<!--        &lt;!&ndash; Botón Volver &ndash;&gt;-->
-<!--        <com.google.android.material.button.MaterialButton-->
-<!--            android:id="@+id/btnVolver"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Volver"-->
-<!--            android:textAllCaps="false"-->
-<!--            style="@style/Widget.MaterialComponents.Button.OutlinedButton"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/rvPuntosRuta"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            android:layout_marginTop="24dp"-->
-<!--            android:layout_marginBottom="16dp" />-->
-
-<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
-<!--</ScrollView>-->
