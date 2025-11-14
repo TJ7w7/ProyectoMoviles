@@ -24,7 +24,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="0dp" />
 
         <TextView
             android:id="@+id/txtFecha"
@@ -213,7 +213,5 @@
                 android:layout_marginTop="16dp" />
 
         </LinearLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </FrameLayout>

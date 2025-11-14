@@ -186,7 +186,5 @@
                 app:cornerRadius="8dp" />
 
         </LinearLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </com.google.android.material.card.MaterialCardView>

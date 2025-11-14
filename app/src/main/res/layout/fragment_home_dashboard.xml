@@ -7,317 +7,146 @@
     android:layout_height="match_parent"
     tools:context=".HomeDashboard">
 
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="wrap_content"
+        android:padding="16dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+        <!-- Título -->
+        <TextView
+            android:id="@+id/txtTitulo"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:text="Panel de Control"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-            <!-- Saludo -->
-            <TextView
-                android:id="@+id/txtSaludo"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="¡Bienvenido!"
-                android:textStyle="bold"
-                android:textSize="24sp"
-                android:textColor="@android:color/black"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="16dp" />
+        <!-- Fecha -->
+        <TextView
+            android:id="@+id/txtFecha"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Lunes, 01 de enero 2025"
+            android:textSize="14sp"
+            android:textColor="@android:color/darker_gray"
+            app:layout_constraintTop_toBottomOf="@id/txtTitulo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="4dp" />
 
-            <TextView
-                android:id="@+id/txtFecha"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Viernes, 10 de Octubre 2025"
-                android:textSize="14sp"
-                android:textColor="@android:color/darker_gray"
-                app:layout_constraintTop_toBottomOf="@id/txtSaludo"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="4dp" />
+        <!-- Sección: Material Recolectado -->
+        <TextView
+            android:id="@+id/lblMateriales"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="♻️ Material Recolectado"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            app:layout_constraintTop_toBottomOf="@id/txtFecha"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="24dp" />
 
-            <!-- Tarjetas de resumen -->
-            <TextView
-                android:id="@+id/lblResumenHoy"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Resumen de Hoy"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:textColor="@android:color/black"
-                app:layout_constraintTop_toBottomOf="@id/txtFecha"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="24dp" />
+        <!-- Card: Material Hoy -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardTotalMaterialHoy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="12dp"
+            app:cardBackgroundColor="#4CAF50"
+            app:layout_constraintTop_toBottomOf="@id/lblMateriales"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/cardTotalMaterialGeneral"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="8dp">
 
             <LinearLayout
-                android:id="@+id/llTarjetasHoy"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2"
-                app:layout_constraintTop_toBottomOf="@id/lblResumenHoy"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="12dp">
+                android:orientation="vertical"
+                android:padding="16dp">
 
-                <!-- Rutas del día -->
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:layout_weight="1"
-                    android:layout_margin="4dp"
-                    app:cardElevation="4dp"
-                    app:cardCornerRadius="12dp"
-                    app:cardBackgroundColor="#E3F2FD">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hoy"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/white" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:padding="12dp">
+                <TextView
+                    android:id="@+id/txtPesoHoy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0.00 kg"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
+                    android:layout_marginTop="8dp" />
 
-                        <TextView
-                            android:id="@+id/txtRutasHoy"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="5"
-                            android:textStyle="bold"
-                            android:textSize="32sp"
-                            android:textColor="@android:color/holo_blue_dark" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Rutas Hoy"
-                            android:textSize="12sp"
-                            android:textColor="@android:color/black"
-                            android:layout_marginTop="4dp" />
-
-                    </LinearLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- Incidencias -->
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:layout_weight="1"
-                    android:layout_margin="4dp"
-                    app:cardElevation="4dp"
-                    app:cardCornerRadius="12dp"
-                    app:cardBackgroundColor="#FFEBEE">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:padding="12dp">
-
-                        <TextView
-                            android:id="@+id/txtIncidencias"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="2"
-                            android:textStyle="bold"
-                            android:textSize="32sp"
-                            android:textColor="@android:color/holo_red_dark" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Incidencias"
-                            android:textSize="12sp"
-                            android:textColor="@android:color/black"
-                            android:layout_marginTop="4dp" />
-
-                    </LinearLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
+                <TextView
+                    android:id="@+id/txtMaterialesHoy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Sin recolecciones"
+                    android:textSize="11sp"
+                    android:textColor="@android:color/white"
+                    android:layout_marginTop="8dp"
+                    android:maxLines="2"
+                    android:ellipsize="end" />
             </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-            <!-- Accesos rápidos -->
-            <TextView
-                android:id="@+id/lblAccesosRapidos"
-                android:layout_width="wrap_content"
+        <!-- Card: Material Total -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardTotalMaterialGeneral"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="12dp"
+            app:cardBackgroundColor="#2196F3"
+            app:layout_constraintTop_toBottomOf="@id/lblMateriales"
+            app:layout_constraintStart_toEndOf="@id/cardTotalMaterialHoy"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Accesos Rápidos"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:textColor="@android:color/black"
-                app:layout_constraintTop_toBottomOf="@id/llTarjetasHoy"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="24dp" />
+                android:orientation="vertical"
+                android:padding="16dp">
 
-            <GridLayout
-                android:id="@+id/gridAccesos"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:columnCount="2"
-                android:rowCount="3"
-                app:layout_constraintTop_toBottomOf="@id/lblAccesosRapidos"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="12dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Total Acumulado"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/white" />
 
-                <!-- Botón: Registrar Usuario -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardRegistrarUsuario"
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:layout_columnWeight="1"
-                    android:layout_margin="8dp"
-                    app:cardElevation="2dp"
-                    app:cardCornerRadius="12dp">
+                <TextView
+                    android:id="@+id/txtPesoTotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0.00 kg"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
+                    android:layout_marginTop="8dp" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:padding="16dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="👤"
-                            android:textSize="32sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Registrar\nUsuario"
-                            android:textSize="12sp"
-                            android:textColor="@android:color/black"
-                            android:textAlignment="center"
-                            android:layout_marginTop="8dp" />
-
-                    </LinearLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- Botón: Crear Ruta -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardCrearRuta"
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:layout_columnWeight="1"
-                    android:layout_margin="8dp"
-                    app:cardElevation="2dp"
-                    app:cardCornerRadius="12dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:padding="16dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="🗺️"
-                            android:textSize="32sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Crear\nRuta"
-                            android:textSize="12sp"
-                            android:textColor="@android:color/black"
-                            android:textAlignment="center"
-                            android:layout_marginTop="8dp" />
-
-                    </LinearLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- Botón: Asignar Ruta -->
-<!--                <com.google.android.material.card.MaterialCardView-->
-<!--                    android:id="@+id/cardAsignarRuta"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="100dp"-->
-<!--                    android:layout_columnWeight="1"-->
-<!--                    android:layout_margin="8dp"-->
-<!--                    app:cardElevation="2dp"-->
-<!--                    app:cardCornerRadius="12dp">-->
-
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:orientation="vertical"-->
-<!--                        android:gravity="center"-->
-<!--                        android:padding="16dp">-->
-
-<!--                        <TextView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:text="✅"-->
-<!--                            android:textSize="32sp" />-->
-
-<!--                        <TextView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:text="Asignar\nRuta"-->
-<!--                            android:textSize="12sp"-->
-<!--                            android:textColor="@android:color/black"-->
-<!--                            android:textAlignment="center"-->
-<!--                            android:layout_marginTop="8dp" />-->
-
-<!--                    </LinearLayout>-->
-
-<!--                </com.google.android.material.card.MaterialCardView>-->
-
-<!--                &lt;!&ndash; Botón: Ver Estadísticas &ndash;&gt;-->
-<!--                <com.google.android.material.card.MaterialCardView-->
-<!--                    android:id="@+id/cardEstadisticas"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="100dp"-->
-<!--                    android:layout_columnWeight="1"-->
-<!--                    android:layout_margin="8dp"-->
-<!--                    app:cardElevation="2dp"-->
-<!--                    app:cardCornerRadius="12dp">-->
-
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:orientation="vertical"-->
-<!--                        android:gravity="center"-->
-<!--                        android:padding="16dp">-->
-
-<!--                        <TextView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:text="📊"-->
-<!--                            android:textSize="32sp" />-->
-
-<!--                        <TextView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:text="Ver\nEstadísticas"-->
-<!--                            android:textSize="12sp"-->
-<!--                            android:textColor="@android:color/black"-->
-<!--                            android:textAlignment="center"-->
-<!--                            android:layout_marginTop="8dp" />-->
-
-<!--                    </LinearLayout>-->
-
-<!--                </com.google.android.material.card.MaterialCardView>-->
-
-            </GridLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </ScrollView>
-
-
+                <TextView
+                    android:id="@+id/txtCantidadRegistros"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0 registros"
+                    android:textSize="12sp"
+                    android:textColor="@android:color/white"
+                    android:layout_marginTop="8dp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
