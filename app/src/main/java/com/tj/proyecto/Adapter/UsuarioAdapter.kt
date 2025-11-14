@@ -70,11 +70,26 @@ class UsuarioAdapter (
         // Correo
         holder.txtCorreo.text = "📧 ${usuario.correo}"
 
-        // Estado
+        // Estado - CORRECCIÓN AQUÍ
+        // Primero, remover cualquier listener previo
+        holder.switchEstado.setOnCheckedChangeListener(null)
+
+        // Luego, actualizar el estado
         holder.switchEstado.isChecked = usuario.estado
+
+        // Finalmente, agregar el nuevo listener
         holder.switchEstado.setOnCheckedChangeListener { _, isChecked ->
-            onEstadoChange(usuario, isChecked)
+            // Solo llamar si el estado realmente cambió
+            if (isChecked != usuario.estado) {
+                onEstadoChange(usuario, isChecked)
+            }
         }
+
+        // Estado
+//        holder.switchEstado.isChecked = usuario.estado
+//        holder.switchEstado.setOnCheckedChangeListener { _, isChecked ->
+//            onEstadoChange(usuario, isChecked)
+//        }
 
         // Botones
         holder.btnVerDetalles.setOnClickListener {
@@ -88,9 +103,9 @@ class UsuarioAdapter (
 
     override fun getItemCount() = usuarios.size
 
-    fun updateList(newList: List<entUsuario>) {
-        usuarios.clear()
-        usuarios.addAll(newList)
-        notifyDataSetChanged()
-    }
+//    fun updateList(newList: List<entUsuario>) {
+//        usuarios.clear()
+//        usuarios.addAll(newList)
+//        notifyDataSetChanged()
+//    }
 }

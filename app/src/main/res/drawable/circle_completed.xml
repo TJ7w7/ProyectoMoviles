@@ -3,12 +3,12 @@
     <item>
         <shape android:shape="oval">
             <solid android:color="#4CAF50" />
-            <size android:width="32dp" android:height="32dp" />
+            <size android:width="20dp" android:height="20dp" />
         </shape>
     </item>
     <item
-        android:width="16dp"
-        android:height="16dp"
+        android:width="12dp"
+        android:height="12dp"
         android:gravity="center">
         <rotate
             android:fromDegrees="45"

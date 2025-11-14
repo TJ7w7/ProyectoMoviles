@@ -1,6 +1,7 @@
 package com.tj.proyecto
 
 import android.content.Intent
+import android.location.Geocoder
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -19,6 +20,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.storage.FirebaseStorage
+import java.io.IOException
+import java.util.Locale
+
 
 class RegistroPunto : Fragment() {
 
@@ -49,6 +53,8 @@ class RegistroPunto : Fragment() {
     private var latitudSeleccionada: Double? = null
     private var longitudSeleccionada: Double? = null
 
+    private lateinit var geocoder: Geocoder
+
     // Launcher para seleccionar ubicación desde el mapa
     private val seleccionarUbicacionLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -61,6 +67,9 @@ class RegistroPunto : Fragment() {
             if (latitudSeleccionada != null && longitudSeleccionada != null) {
                 txtCoordenadas.text = "Lat: ${"%.6f".format(latitudSeleccionada)}, Lng: ${"%.6f".format(longitudSeleccionada)}"
                 txtCoordenadas.setTextColor(resources.getColor(android.R.color.holo_green_dark, null))
+
+                // Obtener dirección automáticamente
+                obtenerDireccionDesdeCoord(latitudSeleccionada!!, longitudSeleccionada!!)
             }
         }
     }
@@ -82,6 +91,8 @@ class RegistroPunto : Fragment() {
 
         // Configurar Spinners
         setupSpinners()
+
+        geocoder = Geocoder(requireContext(), Locale.getDefault())
 
         // Configurar listeners
         btnSeleccionarUbicacion.setOnClickListener {
@@ -266,53 +277,6 @@ class RegistroPunto : Fragment() {
                 btnRegistrar.isEnabled = true
                 btnRegistrar.text = "Registrar Punto de Recolección"
             }
-
-//        // Crear GeoPoint
-//        val ubicacion = GeoPoint(latitudSeleccionada!!, longitudSeleccionada!!)
-//
-//        // Crear objeto PuntoRecoleccion
-//        val punto = entPuntoRecoleccion(
-//            id = puntoId,
-//            nombre = nombre,
-//            direccion = direccion,
-//            ubicacion = ubicacion,
-//            zona = zona,
-//            tipo = tipo,
-//            horarioPreferido = horario,
-//            frecuencia = frecuencia,
-//            tiposMaterialAceptado = materialesAceptados,
-//            estado = true,
-//            observaciones = observaciones,
-//            fechaRegistro = System.currentTimeMillis(),
-//            registradoPor = auth.currentUser?.uid ?: ""
-//        )
-//
-//        // Guardar en Firestore
-//        db.collection("puntos_recoleccion")
-//            .document(puntoId)
-//            .set(punto)
-//            .addOnSuccessListener {
-//                Toast.makeText(
-//                    requireContext(),
-//                    "Punto de recolección registrado exitosamente",
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//                limpiarCampos()
-//                btnRegistrar.isEnabled = true
-//                btnRegistrar.text = "Registrar Punto de Recolección"
-//
-//                // Opcional: volver atrás
-//                requireActivity().supportFragmentManager.popBackStack()
-//            }
-//            .addOnFailureListener { e ->
-//                Toast.makeText(
-//                    requireContext(),
-//                    "Error al guardar punto: ${e.message}",
-//                    Toast.LENGTH_LONG
-//                ).show()
-//                btnRegistrar.isEnabled = true
-//                btnRegistrar.text = "Registrar Punto de Recolección"
-//            }
     }
 
     private fun guardarPuntoEnFirestore(
@@ -432,5 +396,93 @@ class RegistroPunto : Fragment() {
         longitudSeleccionada = null
         txtCoordenadas.text = "Sin ubicación seleccionada"
         txtCoordenadas.setTextColor(resources.getColor(android.R.color.darker_gray, null))
+    }
+
+    //Obtener dirección desde coordenadas
+    private fun obtenerDireccionDesdeCoord(latitud: Double, longitud: Double) {
+        try {
+            // Mostrar indicador de carga
+            etDireccion.setText("Obteniendo dirección...")
+            etDireccion.isEnabled = false
+
+            // Ejecutar en un hilo secundario
+            Thread {
+                try {
+                    val addresses = geocoder.getFromLocation(latitud, longitud, 1)
+
+                    // Volver al hilo principal para actualizar la UI
+                    activity?.runOnUiThread {
+                        if (!addresses.isNullOrEmpty()) {
+                            val address = addresses[0]
+
+                            // Construir dirección completa
+                            val direccionCompleta = buildString {
+                                // Calle y número
+                                if (!address.thoroughfare.isNullOrEmpty()) {
+                                    append(address.thoroughfare)
+                                    if (!address.subThoroughfare.isNullOrEmpty()) {
+                                        append(" ${address.subThoroughfare}")
+                                    }
+                                }
+
+                                // Localidad/Ciudad
+                                if (!address.locality.isNullOrEmpty()) {
+                                    if (isNotEmpty()) append(", ")
+                                    append(address.locality)
+                                }
+
+                                // Provincia/Departamento
+                                if (!address.subAdminArea.isNullOrEmpty()) {
+                                    if (isNotEmpty()) append(", ")
+                                    append(address.subAdminArea)
+                                }
+
+                                // País
+                                if (!address.countryName.isNullOrEmpty()) {
+                                    if (isNotEmpty()) append(", ")
+                                    append(address.countryName)
+                                }
+                            }
+
+                            etDireccion.setText(direccionCompleta)
+                            etDireccion.isEnabled = true
+
+                            Toast.makeText(
+                                requireContext(),
+                                "✓ Dirección obtenida automáticamente",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            etDireccion.setText("")
+                            etDireccion.isEnabled = true
+                            Toast.makeText(
+                                requireContext(),
+                                "No se pudo obtener la dirección. Ingrésela manualmente.",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+                } catch (e: IOException) {
+                    activity?.runOnUiThread {
+                        etDireccion.setText("")
+                        etDireccion.isEnabled = true
+                        Toast.makeText(
+                            requireContext(),
+                            "Error al obtener dirección. Ingrésela manualmente.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }.start()
+
+        } catch (e: Exception) {
+            etDireccion.setText("")
+            etDireccion.isEnabled = true
+            Toast.makeText(
+                requireContext(),
+                "Error: ${e.message}",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 }

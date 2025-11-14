@@ -66,11 +66,26 @@ class PuntoRecoleccionAdapter(
             )
         }
 
-        // Estado
+        // Estado - CORRECCIÓN AQUÍ
+        // Primero, remover cualquier listener previo
+        holder.switchEstado.setOnCheckedChangeListener(null)
+
+        // Luego, actualizar el estado
         holder.switchEstado.isChecked = punto.estado
+
+        // Finalmente, agregar el nuevo listener
         holder.switchEstado.setOnCheckedChangeListener { _, isChecked ->
-            onEstadoChange(punto, isChecked)
+            // Solo llamar si el estado realmente cambió
+            if (isChecked != punto.estado) {
+                onEstadoChange(punto, isChecked)
+            }
         }
+
+        // Estado
+//        holder.switchEstado.isChecked = punto.estado
+//        holder.switchEstado.setOnCheckedChangeListener { _, isChecked ->
+//            onEstadoChange(punto, isChecked)
+//        }
 
         // Dirección
         holder.txtDireccion.text = "📍 ${punto.direccion}"
