@@ -31,8 +31,6 @@ class RegistroPesoMaterial : Fragment() {
     private lateinit var editPesoCarton: EditText
     private lateinit var editPesoVidrio: EditText
     private lateinit var editPesoPapel: EditText
-    private lateinit var editPesoMetal: EditText
-    private lateinit var editPesoOrganico: EditText
     private lateinit var editObservaciones: EditText
     private lateinit var btnGuardarYFinalizar: MaterialButton
     private lateinit var btnCancelar: MaterialButton

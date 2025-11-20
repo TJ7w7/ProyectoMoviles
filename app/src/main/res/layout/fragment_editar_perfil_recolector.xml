@@ -30,17 +30,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
-            <TextView
-                android:id="@+id/txtSubtitulo"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Solo puedes modificar tu número de teléfono"
-                android:textSize="14sp"
-                android:textColor="@android:color/darker_gray"
-                app:layout_constraintTop_toBottomOf="@id/txtTitulo"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="4dp" />
 
             <!-- Card Container -->
             <androidx.cardview.widget.CardView
@@ -50,7 +39,7 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="2dp"
                 app:cardUseCompatPadding="true"
-                app:layout_constraintTop_toBottomOf="@id/txtSubtitulo"
+                app:layout_constraintTop_toBottomOf="@id/txtTitulo"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="16dp">
@@ -163,7 +152,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Teléfono *"
-                        app:helperText="Ej: 987654321"
                         android:layout_marginTop="16dp"
                         app:startIconDrawable="@android:drawable/ic_menu_call"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -177,34 +165,37 @@
                             android:maxLines="1" />
 
                     </com.google.android.material.textfield.TextInputLayout>
-
-                    <TextView
-                        android:id="@+id/txtAyudaTelefono"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="💡 El teléfono es importante para que el administrador pueda contactarte"
-                        android:textSize="12sp"
-                        android:textColor="@android:color/darker_gray"
-                        android:layout_marginTop="8dp" />
-
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Nota de campos requeridos -->
-            <TextView
-                android:id="@+id/txtNotaRequeridos"
+            <!-- Botón Restablecer Contraseña -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRestablecerPassword"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="* Campos obligatorios"
-                android:textSize="12sp"
-                android:textColor="@android:color/darker_gray"
-                android:textStyle="italic"
-                android:drawableStart="@android:drawable/ic_dialog_info"
-                android:drawablePadding="8dp"
+                android:layout_height="60dp"
+                android:text="Enviar Correo para Restablecer Contraseña"
+                android:textAllCaps="false"
+                android:textSize="14sp"
+                android:backgroundTint="@android:color/holo_orange_dark"
+                app:cornerRadius="8dp"
+                app:icon="@android:drawable/ic_dialog_email"
+                app:iconGravity="start"
                 app:layout_constraintTop_toBottomOf="@id/cardFormulario"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="16dp" />
+
+            <!-- Mover el divider después del nuevo botón -->
+            <View
+                android:id="@+id/divider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"
+                android:alpha="0.3"
+                app:layout_constraintTop_toBottomOf="@id/btnRestablecerPassword"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="24dp" />
 
             <!-- Botones -->
             <com.google.android.material.button.MaterialButton
@@ -219,7 +210,7 @@
                 android:backgroundTint="@android:color/black"
                 app:cornerRadius="12dp"
                 app:rippleColor="@android:color/darker_gray"
-                app:layout_constraintTop_toBottomOf="@id/txtNotaRequeridos"
+                app:layout_constraintTop_toBottomOf="@id/divider"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="24dp" />
@@ -246,196 +237,3 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </FrameLayout>
-
-<!--<?xml version="1.0" encoding="utf-8"?>-->
-<!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--    tools:context=".Recolector.EditarPerfilRecolector">-->
-
-
-<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:padding="16dp">-->
-
-<!--        &lt;!&ndash; Título &ndash;&gt;-->
-<!--        <TextView-->
-<!--            android:id="@+id/txtTitulo"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Editar Perfil"-->
-<!--            android:textStyle="bold"-->
-<!--            android:textColor="@android:color/black"-->
-<!--            android:textSize="22sp"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent" />-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/txtSubtitulo"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Solo puedes modificar tu número de teléfono"-->
-<!--            android:textSize="14sp"-->
-<!--            android:textColor="@android:color/darker_gray"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/txtTitulo"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            android:layout_marginTop="4dp" />-->
-
-<!--        &lt;!&ndash; Datos no editables &ndash;&gt;-->
-<!--        <com.google.android.material.card.MaterialCardView-->
-<!--            android:id="@+id/cardDatosNoEditables"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="24dp"-->
-<!--            app:cardElevation="2dp"-->
-<!--            app:cardCornerRadius="8dp"-->
-<!--            app:cardBackgroundColor="#F5F5F5"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/txtSubtitulo"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent">-->
-
-<!--            <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:padding="16dp">-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/lblNombre"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="Nombre Completo"-->
-<!--                    android:textSize="12sp"-->
-<!--                    android:textColor="@android:color/darker_gray"-->
-<!--                    app:layout_constraintTop_toTopOf="parent"-->
-<!--                    app:layout_constraintStart_toStartOf="parent" />-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/txtNombreCompleto"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="Carlos Hernández"-->
-<!--                    android:textSize="16sp"-->
-<!--                    android:textColor="@android:color/black"-->
-<!--                    app:layout_constraintTop_toBottomOf="@id/lblNombre"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    android:layout_marginTop="4dp" />-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/lblEmail"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="Correo Electrónico"-->
-<!--                    android:textSize="12sp"-->
-<!--                    android:textColor="@android:color/darker_gray"-->
-<!--                    app:layout_constraintTop_toBottomOf="@id/txtNombreCompleto"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    android:layout_marginTop="12dp" />-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/txtEmail"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="carlos@gmail.com"-->
-<!--                    android:textSize="16sp"-->
-<!--                    android:textColor="@android:color/black"-->
-<!--                    app:layout_constraintTop_toBottomOf="@id/lblEmail"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    android:layout_marginTop="4dp" />-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/txtNotaNoEditable"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="ℹ️ Estos datos no se pueden modificar"-->
-<!--                    android:textSize="12sp"-->
-<!--                    android:textStyle="italic"-->
-<!--                    android:textColor="@android:color/darker_gray"-->
-<!--                    app:layout_constraintTop_toBottomOf="@id/txtEmail"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    android:layout_marginTop="12dp" />-->
-
-<!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
-
-<!--        </com.google.android.material.card.MaterialCardView>-->
-
-<!--        &lt;!&ndash; Campo editable: Teléfono &ndash;&gt;-->
-<!--        <TextView-->
-<!--            android:id="@+id/lblTelefono"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Teléfono *"-->
-<!--            android:textSize="14sp"-->
-<!--            android:textStyle="bold"-->
-<!--            android:textColor="@android:color/black"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/cardDatosNoEditables"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            android:layout_marginTop="24dp" />-->
-
-<!--        <com.google.android.material.textfield.TextInputLayout-->
-<!--            android:id="@+id/tilTelefono"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:hint="Número de teléfono"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/lblTelefono"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            android:layout_marginTop="8dp">-->
-
-<!--            <EditText-->
-<!--                android:id="@+id/etTelefono"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:inputType="phone"-->
-<!--                android:maxLength="15"-->
-<!--                android:drawableStart="@android:drawable/ic_menu_call"-->
-<!--                android:drawablePadding="8dp" />-->
-
-<!--        </com.google.android.material.textfield.TextInputLayout>-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/txtAyudaTelefono"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="💡 El teléfono es importante para que el administrador pueda contactarte"-->
-<!--            android:textSize="12sp"-->
-<!--            android:textColor="@android:color/darker_gray"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/tilTelefono"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            android:layout_marginTop="8dp" />-->
-
-<!--        &lt;!&ndash; Botones &ndash;&gt;-->
-<!--        <com.google.android.material.button.MaterialButton-->
-<!--            android:id="@+id/btnGuardar"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Guardar Cambios"-->
-<!--            android:textAllCaps="false"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/txtAyudaTelefono"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            android:layout_marginTop="32dp" />-->
-
-<!--        <com.google.android.material.button.MaterialButton-->
-<!--            android:id="@+id/btnCancelar"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Cancelar"-->
-<!--            android:textAllCaps="false"-->
-<!--            style="@style/Widget.MaterialComponents.Button.OutlinedButton"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/btnGuardar"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            android:layout_marginTop="8dp"-->
-<!--            android:layout_marginBottom="16dp" />-->
-
-<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
-<!--</FrameLayout>-->

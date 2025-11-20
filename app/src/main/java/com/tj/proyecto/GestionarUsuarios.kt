@@ -99,7 +99,6 @@ class GestionarUsuarios : Fragment() {
             },
             onEditar = { usuario ->
                 abrirEdicion(usuario)
-                //Toast.makeText(requireContext(), "Editar ${usuario.nombres} - Próximamente", Toast.LENGTH_SHORT).show()
             }
         )
 
@@ -244,8 +243,7 @@ class GestionarUsuarios : Fragment() {
             .setView(dialogView)
             .setPositiveButton("Cerrar", null)
             .setNeutralButton("Editar") { _, _ ->
-                // TODO: Implementar edición
-                Toast.makeText(requireContext(), "Editar usuario - Próximamente", Toast.LENGTH_SHORT).show()
+                abrirEdicion(usuario)
             }
             .show()
     }

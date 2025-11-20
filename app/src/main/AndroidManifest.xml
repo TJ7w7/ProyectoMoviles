@@ -49,7 +49,7 @@
             android:name=".Administrador"
             android:exported="false" />
         <activity
-            android:name=".IniciarSecion"
+            android:name=".IniciarSesion"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

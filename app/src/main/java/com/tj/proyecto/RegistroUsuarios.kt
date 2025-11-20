@@ -1,6 +1,7 @@
 package com.tj.proyecto
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -70,31 +71,106 @@ class RegistroUsuarios : Fragment() {
         btnCancelar = view.findViewById(R.id.btnCancelar)
     }
 
+//    private fun registrarUsuario() {
+//        // Validar campos
+//        if (!validarCampos()) {
+//            return
+//        }
+//
+//        // Mostrar progress
+//        btnRegistrar.isEnabled = false
+//        btnRegistrar.text = "Registrando..."
+//
+//        val correo = etCorreo.text.toString().trim()
+//        val password = etPassword.text.toString().trim()
+//
+//        // Crear usuario en Firebase Authentication
+//        auth.createUserWithEmailAndPassword(correo, password)
+//            .addOnSuccessListener { authResult ->
+//                val userId = authResult.user?.uid ?: return@addOnSuccessListener
+//
+//                // Crear objeto Usuario
+//                val tipoUsuario = if (rbAdministrador.isChecked) "Administrador" else "Recolector"
+//                val usuario = entUsuario(
+//                    id = userId,
+//                    tipoUsuario = tipoUsuario,
+//                    nombres = etNombres.text.toString().trim(),
+//                    apellidos = etApellidos.text.toString().trim(),
+//                    telefono = etTelefono.text.toString().trim(),
+//                    correo = correo,
+//                    fechaRegistro = System.currentTimeMillis(),
+//                    estado = true,
+//                    registradoPor = auth.currentUser?.uid ?: ""
+//                )
+//
+//                // Guardar en Firestore
+//                db.collection("usuarios")
+//                    .document(userId)
+//                    .set(usuario)
+//                    .addOnSuccessListener {
+//                        Toast.makeText(
+//                            requireContext(),
+//                            "Usuario registrado exitosamente",
+//                            Toast.LENGTH_SHORT
+//                        ).show()
+//                        limpiarCampos()
+//                        btnRegistrar.isEnabled = true
+//                        btnRegistrar.text = "Registrar Usuario"
+//
+//                        // Opcional: volver atrás
+//                        requireActivity().supportFragmentManager.popBackStack()
+//                    }
+//                    .addOnFailureListener { e ->
+//                        Toast.makeText(
+//                            requireContext(),
+//                            "Error al guardar datos: ${e.message}",
+//                            Toast.LENGTH_LONG
+//                        ).show()
+//                        btnRegistrar.isEnabled = true
+//                        btnRegistrar.text = "Registrar Usuario"
+//                    }
+//            }
+//            .addOnFailureListener { e ->
+//                var mensaje = "Error al crear usuario"
+//                when {
+//                    e.message?.contains("email address is already") == true ->
+//                        mensaje = "El correo ya está registrado"
+//                    e.message?.contains("password") == true ->
+//                        mensaje = "La contraseña debe tener al menos 6 caracteres"
+//                    e.message?.contains("network") == true ->
+//                        mensaje = "Error de conexión. Verifica tu internet"
+//                }
+//
+//                Toast.makeText(requireContext(), mensaje, Toast.LENGTH_LONG).show()
+//                btnRegistrar.isEnabled = true
+//                btnRegistrar.text = "Registrar Usuario"
+//            }
+//    }
+
     private fun registrarUsuario() {
-        // Validar campos
         if (!validarCampos()) {
             return
         }
 
-        // Mostrar progress
         btnRegistrar.isEnabled = false
         btnRegistrar.text = "Registrando..."
 
         val correo = etCorreo.text.toString().trim()
         val password = etPassword.text.toString().trim()
+        val nombres = etNombres.text.toString().trim()
+        val apellidos = etApellidos.text.toString().trim()
 
         // Crear usuario en Firebase Authentication
         auth.createUserWithEmailAndPassword(correo, password)
             .addOnSuccessListener { authResult ->
                 val userId = authResult.user?.uid ?: return@addOnSuccessListener
 
-                // Crear objeto Usuario
                 val tipoUsuario = if (rbAdministrador.isChecked) "Administrador" else "Recolector"
                 val usuario = entUsuario(
                     id = userId,
                     tipoUsuario = tipoUsuario,
-                    nombres = etNombres.text.toString().trim(),
-                    apellidos = etApellidos.text.toString().trim(),
+                    nombres = nombres,
+                    apellidos = apellidos,
                     telefono = etTelefono.text.toString().trim(),
                     correo = correo,
                     fechaRegistro = System.currentTimeMillis(),
@@ -107,16 +183,17 @@ class RegistroUsuarios : Fragment() {
                     .document(userId)
                     .set(usuario)
                     .addOnSuccessListener {
+                        // Enviar correo con contraseña temporal
+                        enviarCorreoBienvenida(correo, nombres, apellidos, password, tipoUsuario)
+
                         Toast.makeText(
                             requireContext(),
-                            "Usuario registrado exitosamente",
+                            "Usuario registrado. Correo enviado exitosamente.",
                             Toast.LENGTH_SHORT
                         ).show()
                         limpiarCampos()
                         btnRegistrar.isEnabled = true
                         btnRegistrar.text = "Registrar Usuario"
-
-                        // Opcional: volver atrás
                         requireActivity().supportFragmentManager.popBackStack()
                     }
                     .addOnFailureListener { e ->
@@ -143,6 +220,76 @@ class RegistroUsuarios : Fragment() {
                 Toast.makeText(requireContext(), mensaje, Toast.LENGTH_LONG).show()
                 btnRegistrar.isEnabled = true
                 btnRegistrar.text = "Registrar Usuario"
+            }
+    }
+
+    private fun enviarCorreoBienvenida(
+        correo: String,
+        nombres: String,
+        apellidos: String,
+        password: String,
+        tipoUsuario: String
+    ) {
+        // Crear documento en colección 'mail' (usado por Firebase Extensions)
+        val emailData = hashMapOf(
+            "to" to correo,
+            "message" to hashMapOf(
+                "subject" to "Bienvenido a EcoManager",
+                "text" to """
+                Hola $nombres $apellidos,
+                
+                Tu cuenta ha sido creada exitosamente en nuestro sistema.
+                
+                Detalles de tu cuenta:
+                - Tipo de usuario: $tipoUsuario
+                - Correo: $correo
+                - Contraseña temporal: $password
+                
+                Por favor, cambia tu contraseña después de iniciar sesión por primera vez.
+                
+                Saludos,
+                Equipo de EcoManager
+            """.trimIndent(),
+                "html" to """
+                <html>
+                <body style="font-family: Arial, sans-serif; padding: 20px; background-color: #f5f5f5;">
+                    <div style="max-width: 600px; margin: 0 auto; background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <h2 style="color: #4CAF50; text-align: center;">Bienvenido al Sistema</h2>
+                        <p>Hola <strong>$nombres $apellidos</strong>,</p>
+                        <p>Tu cuenta ha sido creada exitosamente en nuestro sistema.</p>
+                        
+                        <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0;">
+                            <h3 style="color: #333; margin-top: 0;">Detalles de tu cuenta:</h3>
+                            <p><strong>Tipo de usuario:</strong> $tipoUsuario</p>
+                            <p><strong>Correo:</strong> $correo</p>
+                            <p><strong>Contraseña temporal:</strong> <span style="background-color: #ffeb3b; padding: 5px 10px; border-radius: 3px; font-family: monospace;">$password</span></p>
+                        </div>
+                        
+                        <div style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0;">
+                            <p style="margin: 0;"><strong>⚠️ Importante:</strong> Por seguridad, te recomendamos cambiar tu contraseña después de iniciar sesión por primera vez.</p>
+                        </div>
+                        
+                        <p style="text-align: center; color: #666; margin-top: 30px;">
+                            Si tienes alguna pregunta, no dudes en contactarnos.
+                        </p>
+                        
+                        <p style="text-align: center; color: #999; font-size: 12px; margin-top: 20px;">
+                            © 2025 Sistema EcoManager
+                        </p>
+                    </div>
+                </body>
+                </html>
+            """.trimIndent()
+            )
+        )
+
+        db.collection("mail")
+            .add(emailData)
+            .addOnSuccessListener {
+                Log.d("RegistroUsuarios", "Correo programado para envío")
+            }
+            .addOnFailureListener { e ->
+                Log.e("RegistroUsuarios", "Error al programar correo: ${e.message}")
             }
     }
 

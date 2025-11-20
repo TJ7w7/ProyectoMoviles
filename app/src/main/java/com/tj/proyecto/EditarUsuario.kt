@@ -1,5 +1,6 @@
 package com.tj.proyecto
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.widget.SwitchCompat
 import com.tj.proyecto.Entidad.entUsuario
 import com.google.android.material.button.MaterialButton
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -19,6 +21,7 @@ import java.util.Locale
 class EditarUsuario : Fragment() {
 
     private lateinit var db: FirebaseFirestore
+    private lateinit var auth: FirebaseAuth
     private lateinit var usuario: entUsuario
 
     private lateinit var txtTipoUsuario: TextView
@@ -27,6 +30,7 @@ class EditarUsuario : Fragment() {
     private lateinit var etTelefono: EditText
     private lateinit var txtCorreo: TextView
     private lateinit var switchEstado: SwitchCompat
+    private lateinit var btnRestablecerPassword: MaterialButton
     private lateinit var txtInfoRegistro: TextView
     private lateinit var btnGuardarCambios: MaterialButton
     private lateinit var btnCancelar: MaterialButton
@@ -60,6 +64,7 @@ class EditarUsuario : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         db = FirebaseFirestore.getInstance()
+        auth = FirebaseAuth.getInstance()
 
         // Reconstruir usuario desde argumentos
         arguments?.let {
@@ -90,6 +95,10 @@ class EditarUsuario : Fragment() {
             guardarCambios()
         }
 
+        btnRestablecerPassword.setOnClickListener {
+            mostrarDialogoRestablecerPassword()
+        }
+
         btnCancelar.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
         }
@@ -104,9 +113,71 @@ class EditarUsuario : Fragment() {
         etTelefono = view.findViewById(R.id.etTelefono)
         txtCorreo = view.findViewById(R.id.txtCorreo)
         switchEstado = view.findViewById(R.id.switchEstado)
+        btnRestablecerPassword = view.findViewById(R.id.btnRestablecerPassword)
         txtInfoRegistro = view.findViewById(R.id.txtInfoRegistro)
         btnGuardarCambios = view.findViewById(R.id.btnGuardarCambios)
         btnCancelar = view.findViewById(R.id.btnCancelar)
+    }
+
+    private fun mostrarDialogoRestablecerPassword() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Restablecer Contraseña")
+            .setMessage(
+                "Se enviará un correo electrónico a ${usuario.correo} con un enlace para restablecer su contraseña.\n\n" +
+                        "¿Desea continuar?"
+            )
+            .setPositiveButton("Enviar Correo") { _, _ ->
+                enviarCorreoRestablecimiento()
+            }
+            .setNegativeButton("Cancelar", null)
+            .show()
+    }
+
+    private fun enviarCorreoRestablecimiento() {
+        btnRestablecerPassword.isEnabled = false
+        btnRestablecerPassword.text = "Enviando..."
+
+        auth.sendPasswordResetEmail(usuario.correo)
+            .addOnSuccessListener {
+                Toast.makeText(
+                    requireContext(),
+                    "✓ Correo enviado a ${usuario.correo}",
+                    Toast.LENGTH_LONG
+                ).show()
+
+                btnRestablecerPassword.isEnabled = true
+                btnRestablecerPassword.text = "Enviar Correo para Restablecer Contraseña"
+
+                // Opcional: Mostrar confirmación adicional
+                mostrarDialogoExito()
+            }
+            .addOnFailureListener { e ->
+                var mensaje = "Error al enviar correo: ${e.message}"
+
+                when {
+                    e.message?.contains("user-not-found") == true ->
+                        mensaje = "Usuario no encontrado en el sistema de autenticación"
+                    e.message?.contains("network") == true ->
+                        mensaje = "Error de conexión. Verifica tu internet"
+                }
+
+                Toast.makeText(requireContext(), mensaje, Toast.LENGTH_LONG).show()
+
+                btnRestablecerPassword.isEnabled = true
+                btnRestablecerPassword.text = "Enviar Correo para Restablecer Contraseña"
+            }
+    }
+
+    private fun mostrarDialogoExito() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("✓ Correo Enviado")
+            .setMessage(
+                "Se ha enviado un correo electrónico a ${usuario.correo}.\n\n" +
+                        "El usuario debe revisar su bandeja de entrada y seguir las instrucciones para restablecer su contraseña.\n\n" +
+                        "El enlace expirará en 1 hora."
+            )
+            .setPositiveButton("Entendido", null)
+            .show()
     }
 
     private fun cargarDatosUsuario() {

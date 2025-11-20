@@ -1,5 +1,6 @@
 package com.tj.proyecto.Recolector
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -18,14 +19,15 @@ class EditarPerfilRecolector : Fragment() {
 
     private lateinit var db: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
-
     private lateinit var txtNombreCompleto: TextView
     private lateinit var txtEmail: TextView
     private lateinit var etTelefono: EditText
+
+    private lateinit var btnRestablecerPassword: MaterialButton
     private lateinit var btnGuardar: MaterialButton
     private lateinit var btnCancelar: MaterialButton
 
-    private var usuarioActual: entUsuario? = null
+//    private var usuarioActual: entUsuario? = null
 
     companion object {
         fun newInstance(usuario: entUsuario?): EditarPerfilRecolector {
@@ -54,6 +56,10 @@ class EditarPerfilRecolector : Fragment() {
         initViews(view)
         cargarDatosActuales()
 
+        btnRestablecerPassword.setOnClickListener {
+            mostrarDialogoRestablecerPassword()
+        }
+
         btnGuardar.setOnClickListener {
             guardarCambios()
         }
@@ -69,6 +75,7 @@ class EditarPerfilRecolector : Fragment() {
         txtNombreCompleto = view.findViewById(R.id.txtNombreCompleto)
         txtEmail = view.findViewById(R.id.txtEmail)
         etTelefono = view.findViewById(R.id.etTelefono)
+        btnRestablecerPassword = view.findViewById(R.id.btnRestablecerPassword)
         btnGuardar = view.findViewById(R.id.btnGuardar)
         btnCancelar = view.findViewById(R.id.btnCancelar)
     }
@@ -82,6 +89,83 @@ class EditarPerfilRecolector : Fragment() {
         txtNombreCompleto.text = "$nombres $apellidos"
         txtEmail.text = correo
         etTelefono.setText(telefono)
+    }
+
+    private fun mostrarDialogoRestablecerPassword() {
+        val correo = arguments?.getString("correo") ?: ""
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("Restablecer Contraseña")
+            .setMessage(
+                "Se enviará un correo electrónico a $correo con un enlace para restablecer tu contraseña.\n\n" +
+                        "¿Deseas continuar?"
+            )
+            .setPositiveButton("Enviar Correo") { _, _ ->
+                enviarCorreoRestablecimiento()
+            }
+            .setNegativeButton("Cancelar", null)
+            .show()
+    }
+
+    private fun enviarCorreoRestablecimiento() {
+        val correo = arguments?.getString("correo") ?: ""
+
+        btnRestablecerPassword.isEnabled = false
+        btnRestablecerPassword.text = "Enviando..."
+
+        try {
+            auth.sendPasswordResetEmail(correo)
+                .addOnSuccessListener {
+                    Toast.makeText(
+                        requireContext(),
+                        "✓ Correo enviado a $correo",
+                        Toast.LENGTH_LONG
+                    ).show()
+
+                    btnRestablecerPassword.isEnabled = true
+                    btnRestablecerPassword.text = "Restablecer Contraseña"
+
+                    mostrarDialogoExito()
+                }
+                .addOnFailureListener { e ->
+                    var mensaje = "Error al enviar correo: ${e.message}"
+
+                    when {
+                        e.message?.contains("user-not-found") == true ->
+                            mensaje = "Usuario no encontrado en el sistema de autenticación"
+                        e.message?.contains("network") == true ->
+                            mensaje = "Error de conexión. Verifica tu internet"
+                    }
+
+                    Toast.makeText(requireContext(), mensaje, Toast.LENGTH_LONG).show()
+
+                    btnRestablecerPassword.isEnabled = true
+                    btnRestablecerPassword.text = "Restablecer Contraseña"
+                }
+        } catch (e: Exception) {
+            Toast.makeText(
+                requireContext(),
+                "Error: ${e.message}",
+                Toast.LENGTH_LONG
+            ).show()
+
+            btnRestablecerPassword.isEnabled = true
+            btnRestablecerPassword.text = "Restablecer Contraseña"
+        }
+    }
+
+    private fun mostrarDialogoExito() {
+        val correo = arguments?.getString("correo") ?: ""
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("✓ Correo Enviado")
+            .setMessage(
+                "Se ha enviado un correo electrónico a $correo.\n\n" +
+                        "Revisa tu bandeja de entrada y sigue las instrucciones para restablecer tu contraseña.\n\n" +
+                        "El enlace expirará en 1 hora."
+            )
+            .setPositiveButton("Entendido", null)
+            .show()
     }
 
     private fun guardarCambios() {
@@ -125,5 +209,4 @@ class EditarPerfilRecolector : Fragment() {
                 btnGuardar.text = "Guardar Cambios"
             }
     }
-
 }

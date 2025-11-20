@@ -12,7 +12,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-class IniciarSecion : AppCompatActivity() {
+class IniciarSesion : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
@@ -27,7 +27,7 @@ class IniciarSecion : AppCompatActivity() {
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
-        setContentView(R.layout.activity_iniciar_secion)
+        setContentView(R.layout.activity_iniciar_sesion)
 
         // Inicializar Firebase
         auth = FirebaseAuth.getInstance()

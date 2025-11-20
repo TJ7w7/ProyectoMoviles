@@ -85,12 +85,6 @@ class UsuarioAdapter (
             }
         }
 
-        // Estado
-//        holder.switchEstado.isChecked = usuario.estado
-//        holder.switchEstado.setOnCheckedChangeListener { _, isChecked ->
-//            onEstadoChange(usuario, isChecked)
-//        }
-
         // Botones
         holder.btnVerDetalles.setOnClickListener {
             onVerDetalles(usuario)
@@ -102,10 +96,4 @@ class UsuarioAdapter (
     }
 
     override fun getItemCount() = usuarios.size
-
-//    fun updateList(newList: List<entUsuario>) {
-//        usuarios.clear()
-//        usuarios.addAll(newList)
-//        notifyDataSetChanged()
-//    }
 }

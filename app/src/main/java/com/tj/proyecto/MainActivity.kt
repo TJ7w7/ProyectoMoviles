@@ -12,12 +12,12 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        val btnIniciarSecion = findViewById<MaterialButton>(R.id.btnIniciarSecion)
+        val btnIniciarSecion = findViewById<MaterialButton>(R.id.btnIniciarSesion)
 
 
         btnIniciarSecion.setOnClickListener {
 
-            val intent = Intent(this, IniciarSecion::class.java)
+            val intent = Intent(this, IniciarSesion::class.java)
             startActivity(intent)
         }
     }
