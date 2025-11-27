@@ -2,6 +2,7 @@ package com.tj.proyecto
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tj.proyecto.Adapter.AyudantesAdapter
@@ -22,6 +24,7 @@ import com.tj.proyecto.Entidad.entVehiculo
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -357,6 +360,103 @@ class AsignarRutaTrabajadores : Fragment() {
             else -> true
         }
     }
+
+//    private fun guardarAsignacion() {
+//        if (!validarCampos()) return
+//
+//        btnAsignar.isEnabled = false
+//        btnAsignar.text = "Guardando..."
+//
+//        val asignacionId = db.collection("asignaciones_rutas").document().id
+//
+//        val asignacion = entAsignacionRuta(
+//            id = asignacionId,
+//            rutaId = rutaSeleccionada!!.id,
+//            rutaCodigo = rutaSeleccionada!!.codigo,
+//            rutaNombre = rutaSeleccionada!!.nombre,
+//            vehiculoId = vehiculoSeleccionado!!.id,
+//            vehiculoPlaca = vehiculoSeleccionado!!.placa,
+//            conductorId = conductorSeleccionado!!.id,
+//            conductorNombre = "${conductorSeleccionado!!.nombres} ${conductorSeleccionado!!.apellidos}",
+//            ayudantesIds = ayudantesSeleccionados.map { it.id },
+//            ayudantesNombres = ayudantesSeleccionados.map { "${it.nombres} ${it.apellidos}" },
+//            fechaAsignacion = fechaSeleccionada,
+//            fechaEjecucion = null,
+//            estado = "Programada",
+//            observaciones = etObservaciones.text.toString().trim(),
+//            fechaRegistro = System.currentTimeMillis()
+//        )
+//
+//        db.collection("asignaciones_rutas")
+//            .document(asignacionId)
+//            .set(asignacion)
+//            .addOnSuccessListener {
+//                // Actualizar estado del vehículo
+//                db.collection("vehiculos")
+//                    .document(vehiculoSeleccionado!!.id)
+//                    .update("estado", "Asignado")
+//                    .addOnSuccessListener {
+//                        // Enviar notificaciones a los trabajadores asignados
+//                        enviarNotificacionesTrabajadores(asignacionId)
+//
+//                        Toast.makeText(
+//                            requireContext(),
+//                            "✓ Ruta asignada exitosamente",
+//                            Toast.LENGTH_SHORT
+//                        ).show()
+//
+//                        // Navegar de vuelta
+//                        requireActivity().supportFragmentManager.popBackStack()
+//                    }
+//                    .addOnFailureListener { e ->
+//                        Toast.makeText(
+//                            requireContext(),
+//                            "Advertencia: Error al actualizar vehículo: ${e.message}",
+//                            Toast.LENGTH_LONG
+//                        ).show()
+//                        requireActivity().supportFragmentManager.popBackStack()
+//                    }
+//            }
+//            .addOnFailureListener { e ->
+//                Toast.makeText(
+//                    requireContext(),
+//                    "Error al guardar asignación: ${e.message}",
+//                    Toast.LENGTH_LONG
+//                ).show()
+//                btnAsignar.isEnabled = true
+//                btnAsignar.text = "Asignar Ruta"
+//            }
+//    }
+//
+//    private fun enviarNotificacionesTrabajadores(asignacionId: String) {
+//        lifecycleScope.launch {
+//            try {
+//                val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+//                val fechaTexto = sdf.format(fechaSeleccionada)
+//
+//                // Preparar información para la notificación
+//                val titulo = "📍 Nueva Ruta Asignada"
+//                val mensaje = "Se te ha asignado la ruta ${rutaSeleccionada!!.codigo} - ${rutaSeleccionada!!.nombre} para el $fechaTexto"
+//
+//                // Lista de IDs de trabajadores a notificar
+//                val trabajadoresIds = mutableListOf<String>()
+//                trabajadoresIds.add(conductorSeleccionado!!.id)
+//                trabajadoresIds.addAll(ayudantesSeleccionados.map { it.id })
+//
+//                // Enviar notificaciones
+//                NotificationHelper.enviarNotificacionMultiple(
+//                    usuariosIds = trabajadoresIds,
+//                    titulo = titulo,
+//                    mensaje = mensaje,
+//                    asignacionId = asignacionId
+//                )
+//
+//                Log.d("Notificaciones", "Notificaciones enviadas a ${trabajadoresIds.size} trabajadores")
+//            } catch (e: Exception) {
+//                Log.e("Notificaciones", "Error al enviar notificaciones: ${e.message}")
+//            }
+//        }
+//    }
 
     private fun guardarAsignacion() {
         if (!validarCampos()) return

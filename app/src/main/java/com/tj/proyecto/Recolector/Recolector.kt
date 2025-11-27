@@ -20,6 +20,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.tj.proyecto.FCMTokenManager
 
 class Recolector : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var drawer: DrawerLayout
@@ -32,6 +33,8 @@ class Recolector : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_recolector)
+
+        FCMTokenManager.actualizarTokenEnFirestore()
 
         val btnNavView = findViewById<BottomNavigationView>(R.id.menuNavigationView)
         val toolbar: Toolbar = findViewById(R.id.toolbar_main)

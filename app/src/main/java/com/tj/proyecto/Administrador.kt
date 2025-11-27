@@ -35,6 +35,8 @@ class Administrador : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         enableEdgeToEdge()
         setContentView(R.layout.activity_administrador)
 
+        FCMTokenManager.actualizarTokenEnFirestore()
+
         val btnNavView = findViewById<BottomNavigationView>(R.id.menuNavigationView)
         val toolbar: Toolbar = findViewById(R.id.toolbar_main)
         val fab: FloatingActionButton = findViewById(R.id.fab)

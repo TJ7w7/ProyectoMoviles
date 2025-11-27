@@ -61,6 +61,9 @@ dependencies {
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
     implementation("com.squareup.picasso:picasso:2.8")
 
+    implementation("com.google.firebase:firebase-messaging:25.0.1")
+//    implementation("com.google.firebase:firebase-messaging-ktx")
+
     // Coroutines
     //implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
 

@@ -9,5 +9,6 @@ data class entUsuario(
     val correo: String = "",
     val fechaRegistro: Long = System.currentTimeMillis(),
     val estado: Boolean = true,
-    val registradoPor: String = ""
+    val registradoPor: String = "",
+    val fcmToken: String = ""
 )
