@@ -64,6 +64,8 @@ dependencies {
     implementation("com.google.firebase:firebase-messaging:25.0.1")
 //    implementation("com.google.firebase:firebase-messaging-ktx")
 
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+
     // Coroutines
     //implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
 

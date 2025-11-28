@@ -19,6 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.messaging.FirebaseMessaging
 
 class Administrador : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var drawer: DrawerLayout
@@ -57,6 +58,9 @@ class Administrador : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         navigationView.setNavigationItemSelectedListener(this)
 
         db = FirebaseFirestore.getInstance()
+
+        FirebaseMessaging.getInstance().subscribeToTopic("admin_alerts")
+
         mostrarNombreEnDrawer()
 
         fab.setOnClickListener {
@@ -129,8 +133,7 @@ class Administrador : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             R.id.nav_gestionar_rutas -> loadFragment(GestionarRutas())
             R.id.nav_gestionar_asignaciones -> loadFragment(GestionarAsignaciones())
 
-//            R.id.nav_reporte_estadisticas -> loadFragment(Estadisticas())
-//            R.id.nav_reporte_incidencias -> loadFragment(Incidencias())
+            R.id.nav_incidencia -> loadFragment(Incidencias())
 
             R.id.nav_cerrar_sesion -> { mostrarDialogoCerrarSesion() }
         }

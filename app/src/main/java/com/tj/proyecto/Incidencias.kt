@@ -5,39 +5,29 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import com.tj.proyecto.Adapter.IncidenciasAdapter
+import com.tj.proyecto.Entidad.entIncidencia
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [Incidencias.newInstance] factory method to
- * create an instance of this fragment.
- */
 class Incidencias : Fragment() {
+    private lateinit var db: FirebaseFirestore
     private lateinit var spEstado: Spinner
     private lateinit var spTipo: Spinner
     private lateinit var rvIncidencias: RecyclerView
     private lateinit var llSinDatos: View
-    private lateinit var fabNuevaIncidencia: FloatingActionButton
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    // Lista maestra (todos los datos) y adaptador
+    private var listaCompleta = listOf<entIncidencia>()
+    private lateinit var adapter: IncidenciasAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,13 +36,12 @@ class Incidencias : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_incidencias, container, false)
 
-        initViews(view)
-        setupSpinners()
-        setupRecyclerView()
+        db = FirebaseFirestore.getInstance()
 
-        fabNuevaIncidencia.setOnClickListener {
-            Toast.makeText(requireContext(), "Registrar nueva incidencia - Próximamente", Toast.LENGTH_SHORT).show()
-        }
+        initViews(view)
+        setupRecyclerView()
+        setupSpinners() // Configurar spinners y sus listeners
+        cargarIncidencias() // Descargar datos
 
         return view
     }
@@ -62,48 +51,98 @@ class Incidencias : Fragment() {
         spTipo = view.findViewById(R.id.spTipo)
         rvIncidencias = view.findViewById(R.id.rvIncidencias)
         llSinDatos = view.findViewById(R.id.llSinDatos)
-        fabNuevaIncidencia = view.findViewById(R.id.fabNuevaIncidencia)
+    }
+
+    private fun setupRecyclerView() {
+        // Inicializamos el adapter con lista vacía y la acción de click
+        adapter = IncidenciasAdapter(listOf()) { incidencia ->
+            irADetalleAsignacion(incidencia.asignacionId)
+        }
+        rvIncidencias.layoutManager = LinearLayoutManager(requireContext())
+        rvIncidencias.adapter = adapter
     }
 
     private fun setupSpinners() {
-        // Estados
-        val estados = arrayOf("Todas", "Pendiente", "En Proceso", "Resuelta", "Cancelada")
+        // 1. Spinner Estados
+        val estados = arrayOf("Todas", "Pendiente", "Resuelta") // Simplificado a lo que usamos
         val adapterEstados = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, estados)
         adapterEstados.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spEstado.adapter = adapterEstados
 
-        // Tipos
-        val tipos = arrayOf("Todos", "Punto Inaccesible", "Vehículo Averiado", "Accidente", "Clima", "Otro")
-        val adapterTipos =
-            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, tipos)
+        // 2. Spinner Tipos (Motivos)
+        val tipos = arrayOf("Todos", "QR Dañado / No visible", "Calle/Acceso Bloqueado", "Contenedor no existe", "Obra en la vía", "Otro")
+        val adapterTipos = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, tipos)
         adapterTipos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spTipo.adapter = adapterTipos
+
+        // 3. Listeners para filtrar cuando cambian
+        val listener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                aplicarFiltros()
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
+        spEstado.onItemSelectedListener = listener
+        spTipo.onItemSelectedListener = listener
     }
 
-    private fun setupRecyclerView() {
-        rvIncidencias.layoutManager = LinearLayoutManager(requireContext())
-        // TODO: Configurar adapter cuando se conecte con Firebase
+    private fun cargarIncidencias() {
+        // Escuchamos en tiempo real
+        db.collection("incidencias")
+            .orderBy("fechaReporte", Query.Direction.DESCENDING)
+            .addSnapshotListener { value, error ->
+                if (error != null) {
+                    Toast.makeText(context, "Error cargando incidencias", Toast.LENGTH_SHORT).show()
+                    return@addSnapshotListener
+                }
 
-        llSinDatos.visibility = View.VISIBLE
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment Incidencias.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            Incidencias().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                if (value != null) {
+                    val listaTemp = mutableListOf<entIncidencia>()
+                    for (doc in value) {
+                        val obj = doc.toObject(entIncidencia::class.java)
+                        obj.id = doc.id // Guardamos el ID del documento
+                        listaTemp.add(obj)
+                    }
+                    listaCompleta = listaTemp
+                    aplicarFiltros() // Mostramos los datos filtrados
                 }
             }
+    }
+
+    private fun aplicarFiltros() {
+        val estadoSeleccionado = spEstado.selectedItem.toString()
+        val tipoSeleccionado = spTipo.selectedItem.toString()
+
+        val listaFiltrada = listaCompleta.filter { item ->
+            // Filtro de Estado
+            val pasaEstado = (estadoSeleccionado == "Todas") || (item.estado == estadoSeleccionado)
+
+            // Filtro de Tipo (Buscamos si el motivo contiene la palabra clave o es exacto)
+            val pasaTipo = (tipoSeleccionado == "Todos") || (item.motivo == tipoSeleccionado)
+
+            pasaEstado && pasaTipo
+        }
+
+        adapter.actualizarLista(listaFiltrada)
+
+        // Mostrar u ocultar mensaje de "Sin datos"
+        if (listaFiltrada.isEmpty()) {
+            llSinDatos.visibility = View.VISIBLE
+            rvIncidencias.visibility = View.GONE
+        } else {
+            llSinDatos.visibility = View.GONE
+            rvIncidencias.visibility = View.VISIBLE
+        }
+    }
+
+    private fun irADetalleAsignacion(asignacionId: String) {
+        // Navegamos a la pantalla donde el Admin puede VALIDAR/SALTAR el punto
+        val fragment = DetalleAsignacion.newInstance(asignacionId)
+
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment) // Asegúrate que este ID sea el correcto de tu FrameLayout principal
+            .addToBackStack(null)
+            .commit()
     }
 }

@@ -1,6 +1,7 @@
 package com.tj.proyecto.Recolector
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -38,7 +39,13 @@ import com.google.android.material.button.MaterialButton
 import com.google.firebase.firestore.FirebaseFirestore
 import android.content.Intent
 import android.util.Log
+import android.widget.ImageView
+import android.widget.RadioGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import com.google.firebase.storage.FirebaseStorage
+import java.io.ByteArrayOutputStream
+import android.widget.Button
+import android.widget.RadioButton
 
 
 class RecolectorRuta : Fragment(), OnMapReadyCallback {
@@ -60,6 +67,24 @@ class RecolectorRuta : Fragment(), OnMapReadyCallback {
     private var mapaExpandido = false
     private var rutaIniciada = false
     private var currentPolyline: Polyline? = null
+
+    // Variable para guardar la foto temporalmente en memoria
+    private var fotoIncidenciaBitmap: android.graphics.Bitmap? = null
+
+    // Launcher para tomar foto pequeña (Thumbnail) - ¡Es lo más rápido para demos!
+    private val tomarFotoIncidenciaLauncher = registerForActivityResult(
+        ActivityResultContracts.TakePicturePreview()
+    ) { bitmap ->
+        if (bitmap != null) {
+            fotoIncidenciaBitmap = bitmap
+            // Buscamos la imagen en el diálogo (un poco truculento porque el diálogo está en otro scope,
+            // pero lo manejaremos actualizando una variable global o vista referenciada)
+            vistaDialogoActual?.findViewById<ImageView>(R.id.imgEvidenciaPreview)?.setImageBitmap(bitmap)
+        }
+    }
+
+    // Variable auxiliar para referenciar la vista del diálogo
+    private var vistaDialogoActual: View? = null
 
     data class PuntoConEstado(
         val punto: entPuntoRecoleccion,
@@ -145,10 +170,38 @@ class RecolectorRuta : Fragment(), OnMapReadyCallback {
         adapter = PuntosRecoleccionAdapterTr(
             puntosRecoleccion,
             onPuntoClick = { punto -> enfocarPuntoEnMapa(punto) },
-            onEscanearQR = { punto -> abrirEscanerQR(punto) }
+            onMapGoogle = { punto -> abrirGoogleMap(punto)},
+            onEscanearQR = { punto -> abrirEscanerQR(punto) },
+
+            onReportarClick = { punto -> mostrarDialogoReporte(punto) }
         )
         rvPuntosRecoleccion.layoutManager = LinearLayoutManager(requireContext())
         rvPuntosRecoleccion.adapter = adapter
+    }
+
+    private fun abrirGoogleMap(punto: PuntoConEstado) {
+        // 1. Obtenemos las coordenadas del punto seleccionado
+        val geoPoint = punto.punto.ubicacion
+        val lat = geoPoint?.latitude ?: 0.0
+        val lng = geoPoint?.longitude ?: 0.0
+
+        // 2. Creamos la URI especial para navegación GPS
+        // "google.navigation:q=" le dice al celular que queremos una ruta hacia esas coordenadas
+        val gmmIntentUri = android.net.Uri.parse("google.navigation:q=$lat,$lng")
+
+        // 3. Creamos el Intent para abrir la app externa
+        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+
+        // Le decimos que use específicamente la app de Google Maps
+        mapIntent.setPackage("com.google.android.apps.maps")
+
+        // 4. Lanzamos la app (con protección por si no la tiene instalada)
+        try {
+            startActivity(mapIntent)
+        } catch (e: Exception) {
+            // Si no tiene Google Maps, mostramos un aviso o usamos la web
+            Toast.makeText(requireContext(), "Por favor instala Google Maps", Toast.LENGTH_SHORT).show()
+        }
     }
 
     // Abrir escáner como Activity en pantalla completa
@@ -570,4 +623,103 @@ class RecolectorRuta : Fragment(), OnMapReadyCallback {
             }
         }
     }
+
+    private fun mostrarDialogoReporte(punto: PuntoConEstado) {
+        val builder = AlertDialog.Builder(requireContext())
+        val inflater = requireActivity().layoutInflater
+
+        // Usamos la variable global para acceder luego desde el launcher
+        vistaDialogoActual = inflater.inflate(R.layout.dialog_reportar_incidencia, null)
+
+        val rgMotivos = vistaDialogoActual!!.findViewById<RadioGroup>(R.id.rgMotivos)
+        val btnFoto = vistaDialogoActual!!.findViewById<Button>(R.id.btnTomarFotoIncidencia)
+
+        fotoIncidenciaBitmap = null
+
+        btnFoto.setOnClickListener {
+            tomarFotoIncidenciaLauncher.launch(null)
+        }
+
+        builder.setView(vistaDialogoActual)
+        builder.setTitle("Reportar Incidencia - Punto ${punto.orden}")
+        builder.setPositiveButton("Enviar Reporte") { _, _ ->
+            val selectedId = rgMotivos.checkedRadioButtonId
+            var motivo = "Otro"
+            if (selectedId != -1) {
+                val rb = vistaDialogoActual!!.findViewById<RadioButton>(selectedId)
+                motivo = rb.text.toString()
+            }
+            guardarIncidencia(punto, motivo)
+        }
+        builder.setNegativeButton("Cancelar", null)
+        builder.show()
+    }
+
+    private fun guardarIncidencia(punto: PuntoConEstado, motivo: String) {
+        val progress = android.app.ProgressDialog(requireContext())
+        progress.setMessage("Enviando...")
+        progress.show()
+
+        val data = hashMapOf<String, Any?>(
+            "asignacionId" to asignacionId,
+            "puntoId" to punto.punto.id,
+            "puntoNombre" to punto.punto.nombre,
+            "orden" to punto.orden,
+            "motivo" to motivo,
+            "fechaReporte" to System.currentTimeMillis(),
+            "estado" to "Pendiente",
+            "fotoUrl" to ""
+        )
+
+        if (fotoIncidenciaBitmap != null) {
+            val ref = FirebaseStorage.getInstance().reference.child("incidencias/${System.currentTimeMillis()}.jpg")
+            val baos = ByteArrayOutputStream()
+            fotoIncidenciaBitmap!!.compress(Bitmap.CompressFormat.JPEG, 50, baos)
+
+            ref.putBytes(baos.toByteArray()).addOnSuccessListener {
+                ref.downloadUrl.addOnSuccessListener { uri ->
+                    data["fotoUrl"] = uri.toString()
+                    guardarEnFirestore(data, progress)
+                }
+            }
+        } else {
+            guardarEnFirestore(data, progress)
+        }
+    }
+
+    private fun guardarEnFirestore(data: HashMap<String, Any?>, progressDialog: android.app.ProgressDialog) {
+        db.collection("incidencias")
+            .add(data)
+            .addOnSuccessListener {
+                progressDialog.dismiss()
+                Toast.makeText(requireContext(), "✅ Incidencia reportada", Toast.LENGTH_LONG).show()
+            }
+            .addOnFailureListener {
+                progressDialog.dismiss()
+                Toast.makeText(requireContext(), "Error al enviar reporte", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+//    private fun cargarEstadosPuntosDesdeDB() {
+//        db.collection("evidencias_recoleccion")
+//            .whereEqualTo("asignacionId", asignacionId)
+//            .addSnapshotListener { snapshots, e -> // USAMOS LISTENER EN TIEMPO REAL
+//                if (e != null) return@addSnapshotListener
+//
+//                val puntosCompletados = snapshots!!.documents.mapNotNull { it.getString("puntoId") }.toSet()
+//
+//                var primerPendiente = false
+//                puntosRecoleccion.forEach { p ->
+//                    if (puntosCompletados.contains(p.punto.id)) {
+//                        p.estado = EstadoRecoleccion.COMPLETADO
+//                    } else if (!primerPendiente) {
+//                        p.estado = EstadoRecoleccion.EN_CURSO
+//                        primerPendiente = true
+//                    } else {
+//                        p.estado = EstadoRecoleccion.PENDIENTE
+//                    }
+//                }
+//                adapter.notifyDataSetChanged()
+//            }
+//    }
 }

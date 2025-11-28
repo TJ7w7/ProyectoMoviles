@@ -173,5 +173,4 @@ class VerPuntosRuta : Fragment() {
             .addToBackStack(null)
             .commit()
     }
-
 }

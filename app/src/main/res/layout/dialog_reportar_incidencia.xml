@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Selecciona el motivo:"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <RadioGroup
+            android:id="@+id/rgMotivos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RadioButton android:id="@+id/rbQr" android:text="QR Dañado / Ilegible" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+            <RadioButton android:id="@+id/rbAcceso" android:text="Acceso Bloqueado" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+            <RadioButton android:id="@+id/rbContenedor" android:text="Contenedor no existe" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+            <RadioButton android:id="@+id/rbObra" android:text="Obra en la vía" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+            <RadioButton android:id="@+id/rbOtro" android:text="Otro" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Evidencia (Opcional):"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"/>
+
+        <ImageView
+            android:id="@+id/imgEvidenciaPreview"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:src="@android:drawable/ic_menu_camera"
+            android:scaleType="centerInside"
+            android:background="#EEEEEE"/>
+
+        <Button
+            android:id="@+id/btnTomarFotoIncidencia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="📷 Tomar Foto"
+            android:layout_marginTop="8dp"/>
+
+    </LinearLayout>
+</ScrollView>

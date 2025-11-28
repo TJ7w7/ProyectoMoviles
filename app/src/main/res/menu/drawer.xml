@@ -50,6 +50,14 @@
         </menu>
     </item>
 
+    <item android:title="Incidencias">
+        <menu>
+            <item
+                android:id="@+id/nav_incidencia"
+                android:title="Incidencia"/>
+        </menu>
+    </item>
+
     <item android:title="Cuenta">
         <menu>
             <item

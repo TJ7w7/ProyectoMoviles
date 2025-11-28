@@ -2,6 +2,7 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardPuntoVer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
@@ -13,7 +14,6 @@
         android:layout_height="wrap_content"
         android:padding="12dp">
 
-        <!-- Número de orden -->
         <TextView
             android:id="@+id/txtOrden"
             android:layout_width="40dp"
@@ -27,7 +27,17 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <!-- Nombre -->
+        <ImageView
+            android:id="@+id/imgAlerta"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@android:drawable/ic_dialog_alert"
+            app:tint="#D32F2F"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/txtZona"/>
+
         <TextView
             android:id="@+id/txtNombre"
             android:layout_width="0dp"
@@ -38,10 +48,10 @@
             android:textColor="@android:color/black"
             app:layout_constraintTop_toTopOf="@id/txtOrden"
             app:layout_constraintStart_toEndOf="@id/txtOrden"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="12dp" />
+            app:layout_constraintEnd_toStartOf="@id/imgAlerta"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="8dp"/>
 
-        <!-- Dirección -->
         <TextView
             android:id="@+id/txtDireccion"
             android:layout_width="0dp"
@@ -55,7 +65,6 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="4dp" />
 
-        <!-- Zona -->
         <TextView
             android:id="@+id/txtZona"
             android:layout_width="wrap_content"

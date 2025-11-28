@@ -38,17 +38,17 @@ class MainActivity : AppCompatActivity() {
         verificarPermisosNotificaciones()
 
         // 2. SEMÁFORO: ¿El usuario ya tiene sesión iniciada?
-        val usuarioActual = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser
-
-        if (usuarioActual != null) {
-            // SI YA ESTÁ LOGUEADO:
-            // Saltamos directo al Menú Principal.
-            // Como tu menú ya carga la ruta automáticamente, no enviamos ningún dato extra.
-            val intent = Intent(this, Recolector::class.java)
-            startActivity(intent)
-            finish() // Cerramos el Login para que no pueda volver atrás
-            return
-        }
+//        val usuarioActual = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser
+//
+//        if (usuarioActual != null) {
+//            // SI YA ESTÁ LOGUEADO:
+//            // Saltamos directo al Menú Principal.
+//            // Como tu menú ya carga la ruta automáticamente, no enviamos ningún dato extra.
+//            val intent = Intent(this, Recolector::class.java)
+//            startActivity(intent)
+//            finish() // Cerramos el Login para que no pueda volver atrás
+//            return
+//        }
 
         val btnIniciarSecion = findViewById<MaterialButton>(R.id.btnIniciarSesion)
 
