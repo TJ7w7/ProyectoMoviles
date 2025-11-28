@@ -29,7 +29,7 @@ class RutasHoy : Fragment() {
     private lateinit var txtEnProgreso: TextView
     private lateinit var txtCompletadas: TextView
     private lateinit var spEstado: Spinner
-    private lateinit var btnVerMapa: MaterialButton
+//    private lateinit var btnVerMapa: MaterialButton
     private lateinit var rvRutasHoy: RecyclerView
     private lateinit var llSinRutas: View
 
@@ -51,10 +51,10 @@ class RutasHoy : Fragment() {
         setupRecyclerView()
         cargarRutasHoy()
 
-        btnVerMapa.setOnClickListener {
-            // TODO: Implementar vista de mapa con todas las rutas
-            Toast.makeText(requireContext(), "Próximamente: Mapa con rutas del día", Toast.LENGTH_SHORT).show()
-        }
+//        btnVerMapa.setOnClickListener {
+//            // TODO: Implementar vista de mapa con todas las rutas
+//            Toast.makeText(requireContext(), "Próximamente: Mapa con rutas del día", Toast.LENGTH_SHORT).show()
+//        }
 
         return view
     }
@@ -65,7 +65,7 @@ class RutasHoy : Fragment() {
         txtEnProgreso = view.findViewById(R.id.txtEnProgreso)
         txtCompletadas = view.findViewById(R.id.txtCompletadas)
         spEstado = view.findViewById(R.id.spEstado)
-        btnVerMapa = view.findViewById(R.id.btnVerMapa)
+//        btnVerMapa = view.findViewById(R.id.btnVerMapa)
         rvRutasHoy = view.findViewById(R.id.rvRutasHoy)
         llSinRutas = view.findViewById(R.id.llSinRutas)
     }
