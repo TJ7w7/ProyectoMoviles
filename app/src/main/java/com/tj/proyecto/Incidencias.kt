@@ -1,5 +1,6 @@
 package com.tj.proyecto
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,15 +8,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.ImageView
 import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.tj.proyecto.Adapter.IncidenciasAdapter
 import com.tj.proyecto.Entidad.entIncidencia
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 
 class Incidencias : Fragment() {
@@ -56,7 +64,8 @@ class Incidencias : Fragment() {
     private fun setupRecyclerView() {
         // Inicializamos el adapter con lista vacía y la acción de click
         adapter = IncidenciasAdapter(listOf()) { incidencia ->
-            irADetalleAsignacion(incidencia.asignacionId)
+//            irADetalleAsignacion(incidencia.asignacionId)
+            mostrarDialogoDetalle(incidencia)
         }
         rvIncidencias.layoutManager = LinearLayoutManager(requireContext())
         rvIncidencias.adapter = adapter
@@ -144,5 +153,59 @@ class Incidencias : Fragment() {
             .replace(R.id.fragment_container, fragment) // Asegúrate que este ID sea el correcto de tu FrameLayout principal
             .addToBackStack(null)
             .commit()
+    }
+
+    private fun mostrarDialogoDetalle(incidencia: entIncidencia) {
+        val builder = AlertDialog.Builder(requireContext())
+        val inflater = requireActivity().layoutInflater
+        val view = inflater.inflate(R.layout.dialog_detalle_incidencia, null)
+
+        // Referencias a las vistas del dialog
+        val imgEvidencia = view.findViewById<ImageView>(R.id.imgEvidencia)
+        val txtMotivo = view.findViewById<TextView>(R.id.txtDialogMotivo)
+        val txtPunto = view.findViewById<TextView>(R.id.txtDialogPunto)
+        val txtEstado = view.findViewById<TextView>(R.id.txtDialogEstado)
+        val txtFecha = view.findViewById<TextView>(R.id.txtDialogFecha)
+//        val btnIrAsignacion = view.findViewById<Button>(R.id.btnIrAsignacion)
+        val btnCerrar = view.findViewById<Button>(R.id.btnCerrar)
+
+        // Llenar datos
+        txtMotivo.text = incidencia.motivo
+        txtPunto.text = "Punto ${incidencia.orden}: ${incidencia.puntoNombre}"
+        txtEstado.text = incidencia.estado
+
+        // Formatear fecha
+        val sdf = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+        txtFecha.text = sdf.format(Date(incidencia.fechaReporte))
+
+        // Manejo de la Imagen con Glide
+        if (incidencia.fotoUrl.isNotEmpty()) {
+            imgEvidencia.visibility = View.VISIBLE
+            Glide.with(this)
+                .load(incidencia.fotoUrl)
+                .placeholder(android.R.drawable.ic_menu_gallery) // Imagen mientras carga
+                .error(android.R.drawable.stat_notify_error) // Imagen si falla
+                .into(imgEvidencia)
+        } else {
+            imgEvidencia.visibility = View.GONE
+        }
+
+        builder.setView(view)
+        val dialog = builder.create()
+
+        // Configurar botones
+        btnCerrar.setOnClickListener {
+            dialog.dismiss()
+        }
+
+//        btnIrAsignacion.setOnClickListener {
+//            dialog.dismiss()
+//            // Aquí llamamos a tu función original para ir al mapa/detalle
+//            irADetalleAsignacion(incidencia.asignacionId)
+//        }
+
+        // Fondo transparente para que se vea redondeado si usas cards (opcional)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.show()
     }
 }

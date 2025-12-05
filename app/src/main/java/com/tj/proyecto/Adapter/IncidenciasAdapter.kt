@@ -74,6 +74,10 @@ class IncidenciasAdapter (
         holder.btnVerDetalles.setOnClickListener {
             onVerDetallesClick(item)
         }
+
+        holder.itemView.setOnClickListener {
+            onVerDetallesClick(item)
+        }
     }
 
     override fun getItemCount() = lista.size

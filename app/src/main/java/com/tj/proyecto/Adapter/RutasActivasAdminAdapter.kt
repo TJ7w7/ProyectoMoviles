@@ -29,7 +29,7 @@ class RutasActivasAdminAdapter(
         val progressBar: ProgressBar = itemView.findViewById(R.id.progressBar)
         val txtProgreso: TextView = itemView.findViewById(R.id.txtProgreso)
         val txtProgresoTexto: TextView = itemView.findViewById(R.id.txtProgresoTexto)
-        val btnVerMapa: MaterialButton = itemView.findViewById(R.id.btnVerMapa)
+//        val btnVerMapa: MaterialButton = itemView.findViewById(R.id.btnVerMapa)
         val btnVerDetalles: MaterialButton = itemView.findViewById(R.id.btnVerDetalles)
     }
 
@@ -84,14 +84,14 @@ class RutasActivasAdminAdapter(
         cargarProgresoPuntos(asignacion.id, asignacion.rutaId, holder)
 
         // Botones
-        holder.btnVerMapa.setOnClickListener {
-            // TODO: Implementar vista de mapa para admin
-            Toast.makeText(
-                holder.itemView.context,
-                "Próximamente: Mapa de ruta",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
+//        holder.btnVerMapa.setOnClickListener {
+//            // TODO: Implementar vista de mapa para admin
+//            Toast.makeText(
+//                holder.itemView.context,
+//                "Próximamente: Mapa de ruta",
+//                Toast.LENGTH_SHORT
+//            ).show()
+//        }
 
         holder.btnVerDetalles.setOnClickListener {
             onRutaClick(asignacion)

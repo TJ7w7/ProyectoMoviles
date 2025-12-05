@@ -83,6 +83,18 @@ class RecolectorRuta : Fragment(), OnMapReadyCallback {
         }
     }
 
+    // Launcher para pedir permiso de cámara
+    private val requestCameraPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            // Permiso concedido, ahora sí lanzamos la cámara
+            tomarFotoIncidenciaLauncher.launch(null)
+        } else {
+            Toast.makeText(requireContext(), "Se necesita permiso de cámara para la evidencia", Toast.LENGTH_LONG).show()
+        }
+    }
+
     // Variable auxiliar para referenciar la vista del diálogo
     private var vistaDialogoActual: View? = null
 
@@ -637,7 +649,19 @@ class RecolectorRuta : Fragment(), OnMapReadyCallback {
         fotoIncidenciaBitmap = null
 
         btnFoto.setOnClickListener {
-            tomarFotoIncidenciaLauncher.launch(null)
+//            tomarFotoIncidenciaLauncher.launch(null)
+
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.CAMERA
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                // Si ya tenemos permiso, lanzamos la cámara directamente
+                tomarFotoIncidenciaLauncher.launch(null)
+            } else {
+                // Si no, pedimos permiso al usuario
+                requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+            }
         }
 
         builder.setView(vistaDialogoActual)
